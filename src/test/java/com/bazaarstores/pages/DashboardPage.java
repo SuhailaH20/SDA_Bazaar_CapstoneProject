@@ -15,6 +15,9 @@ public class DashboardPage extends BasePage {
     private final By productsLink = By.cssSelector("a[href*='products'], button:contains('Products')");
     private final By logoutButton = By.cssSelector("button:contains('Logout'), a:contains('Logout')");
     private final By userName = By.cssSelector(".user-name, [class*='username']");
+    private final By ProfileAdmin = By.xpath("//div[@class=\"avatar avatar-lg\"]");
+    private final By menu = By.xpath("//div[@class=\"avatar avatar-lg\"]");
+    private final By storemenuOption = By.xpath("//a[.//span[text()='Store']]");
 
     public DashboardPage(WebDriver driver) {
         super(driver);
@@ -70,5 +73,28 @@ public class DashboardPage extends BasePage {
     public boolean isProfileVisitChartDisplayed() {
         return isDisplayed(profileVisitChart);
     }
+
+    public boolean isProfiletAdminDisplayed() {
+        return isDisplayed(ProfileAdmin);
+    }
+
+    public boolean ismenuDisplayed() {
+        return isDisplayed(menu);
+    }
+
+    public boolean isStoerOptionDisplayed() {
+        return isDisplayed(storemenuOption);
+    }
+
+    public boolean isStoerOptionEnabel() {
+        return isEnabled(storemenuOption);
+    }
+
+
+    public StoresPage clickStoreMenuOption() {
+        click(storemenuOption);
+        return new StoresPage(driver);
+    }
+
 }
 
