@@ -8,6 +8,7 @@ public class DashboardPage extends BasePage {
 
     // By Locators
     private final By dashboard = By.xpath("//div[@class='products-grid']");
+    private final By dashboardAdmin = By.xpath("//*[@id=\"sidebar\"]/div/div[2]/ul/li[2]/a");
     private final By profileVisitChart = By.xpath("//div[@class='card-body']");
     private final By welcomeMessage = By.cssSelector(".welcome-message, [class*='welcome']");
     private final By profileLink = By.cssSelector("a[href*='profile'], button:contains('Profile')");
