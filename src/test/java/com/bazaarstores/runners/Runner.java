@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
         glue = "com.bazaarstores.stepDefinitions",
         tags = "@NegativeRegistration",
         dryRun = false
+        //rajja2
 )
 public class Runner {
 }
