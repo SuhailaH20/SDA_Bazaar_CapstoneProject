@@ -1,6 +1,5 @@
 package com.bazaarstores.utilities;
 
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -72,4 +71,3 @@ public class ConfigReader {
                 Boolean.parseBoolean(properties.getProperty("headless"));
     }
 }
-

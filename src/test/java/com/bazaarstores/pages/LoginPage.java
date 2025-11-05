@@ -10,13 +10,9 @@ public class LoginPage extends BasePage {
     private final By emailInput = By.cssSelector("input[name='email'], input[type='email'], input[placeholder*='Email']");
     private final By passwordInput = By.cssSelector("input[name='password'], input[type='password']");
     private final By loginButton = By.xpath("//button[.='Log in']");
-    private final By registerLink = By.cssSelector("a[href*='Sign Up'], a:contains('Sign Up')");
+    private final By signUp = By.linkText("Sign up");
     private final By errorMessage = By.xpath("//*[@class='toast-message']");
     private final By successMessage = By.cssSelector(".success, .success-message, [class*='success']");
-
-    public LoginPage(WebDriver driver) {
-        super(driver);
-    }
 
     // Fluent Methods
     public LoginPage enterEmail(String email) {
@@ -31,12 +27,12 @@ public class LoginPage extends BasePage {
 
     public DashboardPage clickLoginButton() {
         click(loginButton);
-        return new DashboardPage(driver);
+        return new DashboardPage();
     }
 
     public RegistrationPage clickRegisterLink() {
-        click(registerLink);
-        return new RegistrationPage(driver);
+        click(signUp);
+        return new RegistrationPage();
     }
 
     // Complete Login Method
@@ -74,5 +70,3 @@ public class LoginPage extends BasePage {
         return validationMessage != null && !validationMessage.isEmpty();
     }
 }
-
-////lama

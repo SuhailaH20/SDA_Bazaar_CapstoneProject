@@ -1,11 +1,11 @@
 package com.bazaarstores.stepDefinitions;
 
-
-
 import com.bazaarstores.pages.AllPages;
 import com.bazaarstores.utilities.ApiUtil;
 import com.bazaarstores.utilities.ConfigReader;
 import com.bazaarstores.utilities.Driver;
+import io.cucumber.java.PendingException;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
@@ -14,7 +14,7 @@ import org.junit.Assert;
 
 public class LoginSteps {
 
-    AllPages allPages = new AllPages(Driver.getDriver());
+    AllPages allPages = new AllPages();
 
     @When("user enters valid customer credentials")
     public void user_enters_valid_customer_credentials() {
@@ -40,6 +40,7 @@ public class LoginSteps {
         Assert.assertTrue("Dashboard should be displayed",
                 allPages.getDashboardPage().isDashboardPageDisplayed());
     }
+
     @Then("admin should be logged in successfully")
     public void admin_should_be_logged_in_successfully() {
         Assert.assertTrue("Profile visit chart should be displayed",
@@ -71,11 +72,17 @@ public class LoginSteps {
     @Then("API should return success status code")
     public void api_should_return_success_status_code() {
         Response response = ApiUtil.get("/me");
+        response.prettyPrint();
         ApiUtil.verifyStatusCode(response, 200);
     }
 
     @Then("user should see empty {string} error message")
     public void userShouldSeeEmptyErrorMessage(String field) {
         allPages.getLoginPage().isValidationMessageDisplayed(field);
+    }
+
+    @Given("user goes to homepage")
+    public void userGoesToHomepage() {
+        Driver.getDriver().get(ConfigReader.getBaseUrl());
     }
 }
