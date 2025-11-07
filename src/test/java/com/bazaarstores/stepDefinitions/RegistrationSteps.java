@@ -61,4 +61,40 @@ public class RegistrationSteps {
     public void userShouldSeeInvalidEmailErrorMessage() {
         pages.getRegistrationPage().validateInvalidEmail();
     }
+
+    @Then("user should see required field error messages")
+    public void userShouldSeeRequiredFieldErrorMessages() {
+        pages.getRegistrationPage().validateRequiredFieldErrors();
+    }
+
+    //--------------- [US01_TC004]  & [US01_TC005] ----------------------
+    @And("user enters password for sign up {string}")
+    public void user_enters_password_for_sign_up(String password) {
+        pages.getRegistrationPage().enterPassword(password);
+    }
+    @And("user enters confirm password for sign up {string}")
+    public void user_enters_confirm_password_for_sign_up(String confiPass) {
+        pages.getRegistrationPage().enterPasswordConfirmation(confiPass);
+    }
+    @Then("user should see password length error message")
+    public void userShouldSeePasswordLengthErrorMessage() {
+        pages.getRegistrationPage().validatePasswordLengthError();
+    }
+
+    @Then("user should see Confirm Password mismatch error message")
+    public void user_should_see_confirm_password_mismatch_error_message() {
+        pages.getRegistrationPage().validatePasswordMismatchError();
+    }
+
+    //--------------- [US01_TC006] ----------------------
+    @Then("user should see email taken error message")
+    public void user_should_see_email_taken_error_message() {
+        pages.getRegistrationPage().validateEmailTakenError();
+    }
+
+    //--------------- [US01_TC007] ----------------------
+    @Then("user should see invalid characters in Name error message")
+    public void user_should_see_invalid_characters_in_name_error_message() {
+        pages.getRegistrationPage().invalidCharacterError();
+    }
 }
