@@ -2,7 +2,6 @@ package com.bazaarstores.pages;
 
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 
 public class DashboardPage extends BasePage {
 
@@ -16,6 +15,8 @@ public class DashboardPage extends BasePage {
     private final By productsLink = By.cssSelector("a[href*='products'], button:contains('Products')");
     private final By logoutButton = By.cssSelector("button:contains('Logout'), a:contains('Logout')");
     private final By userName = By.cssSelector(".user-name, [class*='username']");
+    private final By menu = By.xpath("//div[@class=\"sidebar-wrapper active ps\"]");//rajja
+    private final By storeLink = By.xpath("//a[.//span[text()='Store']]");//rajja
 
 
     // Navigation Methods
@@ -67,5 +68,22 @@ public class DashboardPage extends BasePage {
 
     public boolean isProfileVisitChartDisplayed() {
         return isDisplayed(profileVisitChart);
+    }
+
+    public boolean isMenuDisplayed() {
+        return isDisplayed(menu);
+    }
+
+    public boolean isStoreOptionDisplayed() {//rajja
+        return isDisplayed(storeLink);
+    }
+
+
+    public boolean isStoreOptionEnabled() {//rajja
+        return isEnabled(storeLink);
+    }
+
+    public void clickStoreMenuOption() {//rajja
+        click(storeLink);
     }
 }
