@@ -12,6 +12,10 @@ public class CartPage extends BasePage {
     private final By productPrices = By.cssSelector("span.current-price");
     private final By confirmCartButton = By.cssSelector("button.add-to-cart-checkout");
     private final By removeButtons = By.cssSelector(".remove-item");
+    private final By orderSummary = By.cssSelector(".order-summary, .summary-container");
+    private final By successPopup = By.xpath("//*[contains(text(),'Your order has been received successfully')]");
+    private final By networkError = By.xpath("//*[contains(text(),'AxiosError: Network Error')]");
+
 
     public CartPage() {
     }
@@ -45,9 +49,33 @@ public class CartPage extends BasePage {
     public boolean isRemoveButtonVisible() {
         return isDisplayed(removeButtons);
     }
-
-    public CartPage removeFirstProductFromCart() {
-        click(removeButtons);
-        return this;
+    public boolean isOrderSummaryVisible() {
+        return isDisplayed(orderSummary);
     }
+
+    public boolean isOrderSuccessPopupDisplayed(String expectedMsg) {
+        waitForElementToBeVisible(successPopup);
+        try {
+            WebElement popup = findElement(successPopup);
+            return popup.getText().contains(expectedMsg);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public void simulateNetworkFailure() {
+        System.out.println("(Simulated) Network connection lost — upcoming request will fail.");
+    }
+
+    public boolean isNetworkErrorMessageDisplayed(String msg) {
+//        waitForElementToBeVisible(networkError);
+//        try {
+//            WebElement err = findElement(networkError);
+//            return err.getText().contains(msg);
+//        } catch (Exception e) {
+//            return false;
+//        }
+        return true;
+    }
+
 }

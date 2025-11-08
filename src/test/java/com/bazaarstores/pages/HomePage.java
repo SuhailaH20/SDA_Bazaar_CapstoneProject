@@ -6,6 +6,7 @@ import com.bazaarstores.utilities.Driver;
 import io.restassured.response.Response;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -163,6 +164,7 @@ public class HomePage extends BasePage {
 //    }
 
     public boolean isViewCartButtonVisible() {
+        waitForElementToBeVisible(emptyMsg);
         return hoverOverCartIcon().isDisplayed(viewCartBtn);
     }
 

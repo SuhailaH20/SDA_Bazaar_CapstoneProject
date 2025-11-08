@@ -1,4 +1,4 @@
-package com.bazaarstores.pages.Users_Admin;
+package com.bazaarstores.pages;
 
 import com.bazaarstores.pages.BasePage;
 import com.bazaarstores.utilities.Driver;
@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -22,6 +23,12 @@ public class UserPage extends BasePage {
     private final By password_confirmation = By.name("password_confirmation");
     private final By role = By.name("role");
     private final By SubmitButton = By.xpath("//*[@id=\"multiple-column-form\"]/div/div/div/div[2]/div/form/div[2]/div/button");
+    private final By searchField = By.cssSelector("input[placeholder='Search by email']");
+    private final By searchButton = By.xpath("//button[contains(.,'Search')]");
+    private final By usersTable = By.cssSelector("table");
+    private final By tableHeaders = By.xpath("//table//th");
+    private final By userRows = By.xpath("//table//tbody//tr");
+    private final By paginationItems = By.xpath("//ul[contains(@class,'pagination')]//li[contains(@class,'page-item')]");
 
     // ====== Validation Messages ======
     private final By requiredEmailMessage = By.xpath("//li[contains(text(),'The email field is required.')]");
@@ -207,4 +214,88 @@ public class UserPage extends BasePage {
         Driver.getDriver().findElement(duplicateEmailMessage).getText());
         return this;
     }
+
+
+
+    // ---------- Table ----------
+    public boolean isUsersTableDisplayedWithColumns(String name, String email ,String action) {
+        waitForElementToBeVisible(usersTable);
+        List<WebElement> headers = findElements(tableHeaders);
+        List<String> header = new ArrayList<>();
+        for (WebElement col : headers) {
+            header.add(col.getText().trim());
+        }
+        return header.contains(name) & header.contains(email) & header.contains(action);
+    }
+
+    // ---------- Search ----------
+    public UserPage searchUserByEmail(String email) {
+        waitForElementToBeVisible(usersTable);
+        sendKeys(searchField, email);
+        click(searchButton);
+        return this;
+    }
+
+    public UserPage clearSearchField() {
+        waitForElementToBeVisible(usersTable);
+        sendKeys(searchField, "");
+        click(searchButton);
+        return this;
+    }
+
+
+    // ---------- Validations ----------
+    public boolean isUserDisplayedByEmail(String email) {
+        waitForElementToBeVisible(usersTable);
+        List<WebElement> rows = findElements(userRows);
+        int count = 0;
+
+        for (WebElement row : rows) {
+            String rowText = row.getText();
+            if (rowText.contains(email)) {
+                count++;
+            }
+        }
+        return count == 1;
+    }
+
+    public boolean areUsersDisplayedByDomain(String domain) {
+        waitForElementToBeVisible(usersTable);
+        List<WebElement> rows = findElements(userRows);
+
+        List<String> emails = new ArrayList<>();
+        for (WebElement row : rows) {
+            String rowText = row.getText();
+            if (rowText.contains("@")) {
+                emails.add(rowText);
+            }
+        }
+
+        return emails.stream().allMatch(email -> email.contains(domain));
+    }
+
+
+    public boolean isNoUsersFoundMessageDisplayed(String message) {
+        waitForElementToBeVisible(usersTable);
+        waitForElementToBeVisible(userRows);
+        try {
+            WebElement el = findElement(userRows);
+            return el.getText().trim().equalsIgnoreCase(message);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean areAllUsersDisplayed() {
+        waitForElementToBeVisible(usersTable);
+
+        List<WebElement> rows = findElements(userRows);
+        boolean hasUsers = rows.size() > 1;
+
+        List<WebElement> paginationElements = findElements(paginationItems);
+        boolean hasMultiplePages = paginationElements.size() > 1;
+
+        return hasUsers && hasMultiplePages;
+    }
+
 }
