@@ -4,7 +4,6 @@ import com.bazaarstores.pages.AllPages;
 import com.bazaarstores.utilities.ApiUtil;
 import com.bazaarstores.utilities.ConfigReader;
 import com.bazaarstores.utilities.Driver;
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -79,6 +78,11 @@ public class LoginSteps {
     @Then("user should see empty {string} error message")
     public void userShouldSeeEmptyErrorMessage(String field) {
         allPages.getLoginPage().isValidationMessageDisplayed(field);
+    }
+
+    @Then("user should see invalid email format error message")
+    public void userShouldSeeInvalidEmailFormatErrorMessage() {
+        allPages.getLoginPage().isValidationMessageDisplayed("email");
     }
 
     @Given("user goes to homepage")
