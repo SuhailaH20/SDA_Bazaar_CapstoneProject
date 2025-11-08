@@ -70,7 +70,7 @@ public class DashboardPage extends BasePage {
         return isDisplayed(profileVisitChart);
     }
 
-    public boolean isMenuDisplayed() {
+    public boolean isMenuDisplayed() {//rajja
         return isDisplayed(menu);
     }
 
