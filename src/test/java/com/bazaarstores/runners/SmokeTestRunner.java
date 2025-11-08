@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
                 "junit:target/cucumber-reports/cucumber.xml", // Creates JUnit XML report for CI/CD systems
         },
         monochrome = true
+
 )
 public class SmokeTestRunner {
 }
