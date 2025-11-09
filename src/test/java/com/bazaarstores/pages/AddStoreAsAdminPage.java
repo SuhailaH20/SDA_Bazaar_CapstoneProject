@@ -12,7 +12,6 @@ public class AddStoreAsAdminPage extends BasePage {
     private final By SelectAdmin = By.id("admin-column");
     private final By ClickSubmit = By.xpath("//button[@type=\"submit\"]");
     private final By iframelocater = By.xpath("//iframe");
-    private final By SuccessMessage = By.xpath("//div[@class=\"toast toast-success\"]");
     private final By ErrorMessageName = By.xpath("//li[.='The name field is required.']");
     private final By ErrorMessageDescription = By.xpath("//li[.='The description field is required.']");
     private final By ErrorMessageLocation = By.xpath("//li[.='The location field is required.']");
@@ -21,11 +20,13 @@ public class AddStoreAsAdminPage extends BasePage {
 
 
     public AddStoreAsAdminPage enterStoreName(String storeName) {
+        findElement(NameField).clear();
         sendKeys(NameField, storeName);
         return this;
     }
 
     public AddStoreAsAdminPage enterStoreLocation(String location) {
+        findElement(LocationField).clear();
         sendKeys(LocationField, location);
         return this;
     }
@@ -44,33 +45,19 @@ public class AddStoreAsAdminPage extends BasePage {
 
     public AddStoreAsAdminPage ClickSubmitButton(){
         scrollToBottom();
+        waitForElementToBeVisible(ClickSubmit);
         click(ClickSubmit);
         return this;
     }
 
-    public AddStoreAsAdminPage fillAddStoreForm(String storeName, String location, String description, String adminName) {
+    public AddStoreAsAdminPage fillAddStoreForm(String storeName, String location, String description, String adminName)  {
         enterStoreName(storeName);
         enterStoreLocation(location);
         enterStoreDescription(description);
         selectAdminByName(adminName);
-        ClickSubmitButton()
-        ;
+        ClickSubmitButton();
         return this;
     }
-
-
-    public AddStoreAsAdminPage isSuccessMessageDisplayed(){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(SuccessMessage));
-        Assert.assertTrue(isDisplayed(SuccessMessage));
-        return this;
-
-    }
-
-    public By getSuccessMessageLocator() {
-        return SuccessMessage;
-    }
-
-
 
 
     public AddStoreAsAdminPage isErrorMessageNameDisplayed(){
@@ -112,24 +99,8 @@ public class AddStoreAsAdminPage extends BasePage {
     }
 
 
+    public void deselectAdmin() {
+        selectByVisibleText(SelectAdmin, "Select User");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 }
