@@ -46,4 +46,12 @@ public class AllPages {
         }
         return addStoreAsAdminPage;
     }
+    //Lama
+    private UserPage UserPage;
+    public UserPage getUserPage() {
+        if (UserPage == null) {
+            UserPage = new UserPage();
+        }
+        return UserPage;
+    }
 }
