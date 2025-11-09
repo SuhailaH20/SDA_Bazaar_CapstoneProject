@@ -7,6 +7,8 @@ public class AllPages {
     private LoginPage loginPage;
     private RegistrationPage registrationPage;
     private DashboardPage dashboardPage;
+    private StorsPage storsPage;
+    private AddStoreAsAdminPage addStoreAsAdminPage;
 
 
     public LoginPage getLoginPage() {
@@ -28,5 +30,28 @@ public class AllPages {
             dashboardPage = new DashboardPage();
         }
         return dashboardPage;
+    }
+
+    public StorsPage getStorsPage() {//rajja
+        if (storsPage == null) {
+            storsPage = new StorsPage();
+        }
+        return storsPage;
+    }
+
+
+    public AddStoreAsAdminPage getAddStoreAsAdminPage() {//rajja
+        if (addStoreAsAdminPage == null) {
+            addStoreAsAdminPage = new AddStoreAsAdminPage();
+        }
+        return addStoreAsAdminPage;
+    }
+    //Lama
+    private UserPage UserPage;
+    public UserPage getUserPage() {
+        if (UserPage == null) {
+            UserPage = new UserPage();
+        }
+        return UserPage;
     }
 }

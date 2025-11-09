@@ -89,4 +89,15 @@ public class LoginSteps {
     public void userGoesToHomepage() {
         Driver.getDriver().get(ConfigReader.getBaseUrl());
     }
-}
+
+    //Lama
+    @Given("admin is logged in successfully")
+    public void admin_is_logged_in_successfully() {
+        Driver.getDriver().get(ConfigReader.getBaseUrl());
+        allPages.getLoginPage()
+        .enterEmail(ConfigReader.getAdminEmail())
+        .enterPassword(ConfigReader.getDefaultPassword());
+        allPages.getLoginPage().clickLoginButton();
+        org.junit.Assert.assertTrue("Admin dashboard should be visible", allPages.getDashboardPage().isProfileVisitChartDisplayed()
+        );
+    }}
