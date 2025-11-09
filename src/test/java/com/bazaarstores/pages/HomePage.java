@@ -28,6 +28,8 @@ public class HomePage extends BasePage {
     private final By cartPrice = By.cssSelector(".cart-item-price");
     private final By removeBtn = By.cssSelector(".remove-item");
     private final By subtotal = By.cssSelector(".cart-subtotal");
+    private final By profile = By.cssSelector("div.profile-icon");
+    private final By logoutButton = By.xpath("//a[normalize-space()='Log Out']");
     private final By viewCartBtn = By.xpath("//a[@class='cart-button view-cart']");
     private final By emptyMsg = By.xpath("//*[contains(text(),'Your cart is empty')]");
     private final By addSuccessMsg = By.xpath("//*[contains(text(),'Product added to cart successfully') or contains(text(),'Success!')]");
@@ -231,6 +233,14 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    public void clickProfile(){
+        click(profile);
+    }
+
+    public LoginPage clickLogout(){
+        click(logoutButton);
+        return new LoginPage();
+    }
     // ---------- API Utilities ----------
     public HomePage createOutOfStockProductApi(String name) {
         token = ApiUtil.loginAndGetToken(
