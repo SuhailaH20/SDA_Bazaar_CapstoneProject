@@ -1,7 +1,9 @@
 package com.bazaarstores.stepDefinitions;
 
 import com.bazaarstores.pages.AllPages;
+import com.bazaarstores.utilities.Driver;
 import com.github.javafaker.Faker;
+import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -88,7 +90,7 @@ public class AdminStorsSteps {
 
     @And("Admin enter store description {string}")
     public void adminEnterStoreDescription(String description) {
-        AdminStorsSteps.description = Faker.instance().lorem().paragraph();
+        AdminStorsSteps.description = Faker.instance().lorem().sentence();
         pages
                 .getAddStoreAsAdminPage()
                 .enterStoreDescription(AdminStorsSteps.description);
@@ -114,9 +116,8 @@ public class AdminStorsSteps {
     @Then("Admin should see success message for adding store")
     public void adminShouldSeeSuccessMessageForAddingStore(){
         pages
-                .getAddStoreAsAdminPage()
-                .isSuccessMessageDisplayed()
-                .waitForElementToDisappear(pages.getAddStoreAsAdminPage().getSuccessMessageLocator());
+                .getStorsPage()
+                .isSuccessMessageDisplayed();
 
 
     }
@@ -126,21 +127,21 @@ public class AdminStorsSteps {
      Response response = given(spec()).get("/stores");
         JsonPath jsonPath = response.jsonPath();
         String actualName = jsonPath.getString("find{it.name=='" + AdminStorsSteps.storeName + "'}.name");
-        System.out.println("actualName = " + actualName);
         assertEquals(AdminStorsSteps.storeName, actualName);
 
     }
 
 
     @And("Admin Full Add Store Form with {string}, {string}, {string}, {string}")
-    public void adminFullAddStoreFormWith(String storeName,  String  location, String AdminName,String description) {
+    public void adminFullAddStoreFormWith(String storeName,  String  location, String AdminName,String description) throws InterruptedException {
         AdminStorsSteps.storeName = Faker.instance().company().name();
-        AdminStorsSteps.description = Faker.instance().lorem().paragraph();
+        AdminStorsSteps.description = Faker.instance().lorem().sentence();
         AdminStorsSteps.storeLocation = Faker.instance().address().fullAddress();
 
         pages
                 .getAddStoreAsAdminPage()
                 .fillAddStoreForm(AdminStorsSteps.storeName,AdminStorsSteps.storeLocation,AdminStorsSteps.description,AdminName);
+
 
     }
 
@@ -206,29 +207,151 @@ public class AdminStorsSteps {
                 .isErrorMessageLongDescriptionDisplayed();
     }
 
-    @And("Create a store via API with name {string}")
-    public void createAStoreViaAPIWithName(String storeName) {
-        AdminStorsSteps.storeName=storeName;
-        String payload = """
-                {
-                    "name": "Store Edit",
-                    "description": "Store description Edit",
-                    "location": "Store location Edit",
-                    "admin_id": 1
-                }
-                """;
 
-        Response response = given(spec())
-                .body(payload)
-                .post("/stores/create");
+    @When("Admin click on Edit button for store {string}")
+    public void adminClickOnEditButtonForStore(String storeName)  {
 
-        response.prettyPrint();
-        JsonPath jsonPath = response.jsonPath();
-      createdStoreNameAPI = jsonPath.getString("product.name");
-        assertEquals("Store Edit", createdStoreNameAPI);
-
+        pages
+                .getStorsPage()
+                .clickEditButtonForStore(storeName);
 
 
 
     }
+
+    @Then("Admin should see success message for update store")
+    public void adminShouldSeeSuccessMessageForUpdateStore() {
+
+        pages
+                .getStorsPage()
+                .isSuccessUpdatMessageDisplayed();
+
+
+    }
+
+    @And("Admin Leave the {string} field empty")
+    public void adminLeaveTheFieldEmpty(String fildName) {
+        if (fildName.equals("name")) {
+            pages
+                    .getAddStoreAsAdminPage()
+                    .enterStoreName("");
+        } else if (fildName.equals("description")) {
+            pages
+                    .getAddStoreAsAdminPage()
+                    .enterStoreDescription("");
+        } else if (fildName.equals("location")) {
+            pages
+                    .getAddStoreAsAdminPage()
+                    .enterStoreLocation("");
+        }else if (fildName.equals("admin")) {
+            // Assuming there's a method to deselect admin or leave it unselected
+            pages
+                    .getAddStoreAsAdminPage()
+                    .deselectAdmin();
+        } else {
+            throw new IllegalArgumentException("Invalid field name: " + fildName);
+        }
+
+    }
+
+
+    @And("Verify the store update successfully via API {string}")
+    public void verifyTheStoreUpdateSuccessfullyViaAPI(String feildchanged) {
+
+        if(feildchanged.equals("Name")){
+            Response response = given(spec()).get("/stores");
+            JsonPath jsonPath = response.jsonPath();
+            String actualName = jsonPath.getString("find{it.name=='" + AdminStorsSteps.storeName + "'}.name");
+            assertEquals(AdminStorsSteps.storeName, actualName);
+
+        } else if (feildchanged.equals("Location")){
+
+            Response response = given(spec()).get("/stores");
+            JsonPath jsonPath = response.jsonPath();
+            String actuallocation = jsonPath.getString("find{it.name=='" + AdminStorsSteps.storeName + "'}.location");
+            assertEquals(AdminStorsSteps.storeLocation, actuallocation);
+
+        }else if (feildchanged.equals("description")){
+            Response response = given(spec()).get("/stores");
+            JsonPath jsonPath = response.jsonPath();
+            String actualdescription = jsonPath.getString("find{it.name=='" + AdminStorsSteps.storeName + "'}.description");
+            String actualText = actualdescription.replaceAll("<.*?>", "").replaceAll("&nbsp;", " ").trim();
+            assertEquals(AdminStorsSteps.description,actualText);
+
+
+    }
+}
+
+
+    @When("Admin Click on Delete Button for {string}")
+    public void adminClickOnDeleteButtonFor(String storeName) {
+        pages
+                .getStorsPage()
+                .clickdeleteButtonForStore(storeName);
+
+    }
+
+    @Then("Verify the Confirmation Dialog appers")
+    public void verifyTheConfirmationDialogAppers() {
+        pages
+                .getStorsPage()
+                .isConfirmationDialogDisplayed();
+    }
+
+    @And("Admin Clicks on Confirm Delete Button")
+    public void adminClicksOnConfirmDeleteButton() {
+       pages
+               .getStorsPage()
+               .clickConfirmDeletStoreButton();
+    }
+
+    @Then("Admin should see success message for delete store")
+    public void verifyStoreDisappearFromTable() {
+        pages
+                .getStorsPage()
+                .isSuccessDeleteMessageDisplayed();
+
+    }
+
+    @And("Verify the store deleted successfully via API")
+    public void verifyTheStoreDeletedSuccessfullyViaAPI() {
+        pages
+                .getStorsPage()
+                .VirifyStoreDletedeViaAPI();
+
+    }
+
+    @And("Admin Click on Cancel Button")
+    public void adminClickOnCancelButton() {
+        pages
+                .getStorsPage()
+                .clickCancelButton();
+    }
+
+    @Then("Verify store in the table")
+    public void verifyStoreInTheTable() {
+       pages
+               .getStorsPage()
+               .VerifyStoreInTheTable(storeName);
+    }
+
+    @And("Admin Click on Backdrop")
+    public void adminClickOnBackdrop() {
+   pages
+           .getStorsPage()
+           .clickbackdrop();
+
+
+    }
+
+    @And("Admin Full Add Store Form with {string}, {string}, {string}, {string} to edit")
+    public void adminFullAddStoreFormWithToEdit(String storeName, String storeLocation, String admin, String description) {
+        AdminStorsSteps.storeName =storeName;
+        AdminStorsSteps.storeLocation = storeLocation;
+        AdminStorsSteps.description = description;
+        pages
+               .getAddStoreAsAdminPage()
+               .fillAddStoreForm(storeName,storeLocation,description,admin);
+    }
+
 }
