@@ -55,19 +55,4 @@ private HomePage homePage;
         }
         return UserPage;
     }
-    //Lama
-    private UserPage UserPage;
-    public UserPage getUserPage() {
-        if (UserPage == null) {
-            UserPage = new UserPage();
-        }
-        return UserPage;
-    }
-
-    public HomePage getHomePage() {
-        if (homePage == null) {
-            homePage = new HomePage();
-        }
-        return homePage;
-    }
 }
