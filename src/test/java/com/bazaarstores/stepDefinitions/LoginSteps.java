@@ -4,7 +4,7 @@ import com.bazaarstores.pages.AllPages;
 import com.bazaarstores.utilities.ApiUtil;
 import com.bazaarstores.utilities.ConfigReader;
 import com.bazaarstores.utilities.Driver;
-import io.cucumber.java.PendingException;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -81,9 +81,54 @@ public class LoginSteps {
         allPages.getLoginPage().isValidationMessageDisplayed(field);
     }
 
+    @Then("user should see invalid email format error message")
+    public void userShouldSeeInvalidEmailFormatErrorMessage() {
+        allPages.getLoginPage().isValidationMessageDisplayed("email");
+    }
+
     @Given("user goes to homepage")
     public void userGoesToHomepage() {
         Driver.getDriver().get(ConfigReader.getBaseUrl());
+    }
+
+    //------------------------------------------
+    @When("admin clicks profile")
+    public void adminClicksProfile() {
+        allPages.getDashboardPage().clickProfileLink();
+    }
+    @And("admin clicks logout")
+    public void adminClicksLogout() {
+        allPages.getDashboardPage().clickLogout();
+    }
+
+    @When("user clicks profile")
+    public void userClicksProfile() {
+        allPages.getHomePage().clickProfile();
+    }
+    @And("user clicks logout")
+    public void userClicksLogout() {
+        allPages.getHomePage().clickLogout();
+    }
+
+    @Then("user should be redirected to login page")
+    public void userShouldBeRedirectedToLoginPage() {
+        Assert.assertTrue("Login page should be displayed after logout",
+                allPages.getLoginPage().isLoginPageDisplayed());
+    }
+
+    /// ///////////////////
+    @When("user remains idle for {int} minutes")
+    public void userRemainsIdleForMinutes(Integer minutes) {
+        try {
+            // Convert minutes to milliseconds
+            Thread.sleep(minutes * 60 * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    @When("user tries to access the store URL directly")
+    public void userTriesToAccessStoreUrlDirectly() {
+        Driver.getDriver().get(ConfigReader.getBaseUrl()+"/customer");
     }
 
     //Lama
@@ -91,9 +136,10 @@ public class LoginSteps {
     public void admin_is_logged_in_successfully() {
         Driver.getDriver().get(ConfigReader.getBaseUrl());
         allPages.getLoginPage()
-        .enterEmail(ConfigReader.getAdminEmail())
-        .enterPassword(ConfigReader.getDefaultPassword());
+                .enterEmail(ConfigReader.getAdminEmail())
+                .enterPassword(ConfigReader.getDefaultPassword());
         allPages.getLoginPage().clickLoginButton();
         org.junit.Assert.assertTrue("Admin dashboard should be visible", allPages.getDashboardPage().isProfileVisitChartDisplayed()
         );
-    }}
+    }
+}
