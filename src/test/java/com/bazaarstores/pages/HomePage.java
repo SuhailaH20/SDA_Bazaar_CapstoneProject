@@ -219,11 +219,11 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public CartPage clickViewCartButton() {
-        hoverOverCartIcon();
-        click(viewCartBtn);
-        return new CartPage();
-    }
+//    public CartPage clickViewCartButton() {
+//        hoverOverCartIcon();
+//        click(viewCartBtn);
+//        return new CartPage();
+//    }
 
     public HomePage removeFirstProductFromCart() {
         hoverOverCartIcon();
