@@ -11,7 +11,7 @@ Feature: Admin Add User Functionality
 
 
   @Positive
-  Scenario: US15_TC001 Verify adding a new user with valid data
+  Scenario: US15_TC001 Verify adding a new user with valid data *
     And admin enters name "Sara Ahmed"
     And admin enters email "sara@test.com"
     And admin enters password "Pass@1234"
@@ -171,7 +171,7 @@ Feature: Admin Add User Functionality
 
 
   @Negative
-  Scenario: US15_TC015 Verify system accepts email missing domain
+  Scenario: US15_TC015 Verify system accepts email missing domain *
     And admin enters name "Diyala"
     And admin enters email "Diyala@example"
     And admin enters password "Diyala12"
@@ -183,7 +183,7 @@ Feature: Admin Add User Functionality
 
 
   @Negative
-  Scenario: US15_TC016 Verify system accepts name without letters
+  Scenario: US15_TC016 Verify system accepts name without letters *
     And admin enters name "@"
     And admin enters email "123@example.com"
     And admin enters password "D1234567"
@@ -194,7 +194,7 @@ Feature: Admin Add User Functionality
     And verify user exists in API with invalid data
 
   @Negative
-  Scenario: US15_TC017 Verify system accepts uppercase email
+  Scenario: US15_TC017 Verify system accepts uppercase email *
     And admin enters name "Rawan"
     And admin enters email "RAWAN@EXAMPLE.COM"
     And admin enters password "Ra1234567"
@@ -205,7 +205,7 @@ Feature: Admin Add User Functionality
     And verify user exists in API with invalid data
 
   @Negative
-  Scenario: US15_TC018 Verify system accepts password with space
+  Scenario: US15_TC018 Verify system accepts password with space *
     And admin enters name "Osama"
     And admin enters email "Osama@example.com"
     And admin enters password "123 4567"
