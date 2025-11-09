@@ -14,15 +14,17 @@ public class DashboardPage extends BasePage {
     private final By profileLink = By.cssSelector("a[href*='profile'], button:contains('Profile')");
     private final By ordersLink = By.cssSelector("a[href*='orders'], button:contains('Orders')");
     private final By productsLink = By.cssSelector("a[href*='products'], button:contains('Products')");
-    private final By logoutButton = By.cssSelector("button:contains('Logout'), a:contains('Logout')");
+    private final By logoutButton = By.xpath("//a[normalize-space()='Log Out']");
     private final By userName = By.cssSelector(".user-name, [class*='username']");
     private final By menu = By.xpath("//div[@class=\"sidebar-wrapper active ps\"]");//rajja
     private final By storeLink = By.xpath("//a[.//span[text()='Store']]");//rajja
     private final By usersMenu = By.xpath("//a[contains(.,'Users')]");
 
+    private final By Profile= By.id("avatar");
+
     // Navigation Methods
     public void clickProfileLink() {
-        click(profileLink);
+        click(Profile);
     }
 
     public void clickOrdersLink() {
@@ -78,7 +80,6 @@ public class DashboardPage extends BasePage {
     public boolean isStoreOptionDisplayed() {//rajja
         return isDisplayed(storeLink);
     }
-
 
     public boolean isStoreOptionEnabled() {//rajja
         return isEnabled(storeLink);

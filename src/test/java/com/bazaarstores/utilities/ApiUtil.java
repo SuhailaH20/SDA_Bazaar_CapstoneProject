@@ -56,6 +56,19 @@ public class ApiUtil {
         return getAuthRequestSpec().get(endpoint);
     }
 
+    public static Response getWithAuth(String endpoint, String customToken) {
+        return getRequestSpec()
+                .header("Authorization", "Bearer " + customToken)
+                .get(endpoint);
+    }
+
+    public static Response getWithCsrf(String endpoint, String csrfToken) {
+        return getRequestSpec()
+                .header("X-CSRF-TOKEN", csrfToken)
+                .accept("application/json")
+                .get(endpoint);
+    }
+
     // Generic POST request
     public static Response post(String endpoint, String body) {
         return getAuthRequestSpec().body(body).post(endpoint);

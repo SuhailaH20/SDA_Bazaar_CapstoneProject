@@ -10,6 +10,7 @@ public class AllPages {
     private StorsPage storsPage;
     private AddStoreAsAdminPage addStoreAsAdminPage;
 
+private HomePage homePage;
 
     public LoginPage getLoginPage() {
         if (loginPage == null) {
@@ -45,5 +46,28 @@ public class AllPages {
             addStoreAsAdminPage = new AddStoreAsAdminPage();
         }
         return addStoreAsAdminPage;
+    }
+    //Lama
+    private UserPage UserPage;
+    public UserPage getUserPage() {
+        if (UserPage == null) {
+            UserPage = new UserPage();
+        }
+        return UserPage;
+    }
+    //Lama
+    private UserPage UserPage;
+    public UserPage getUserPage() {
+        if (UserPage == null) {
+            UserPage = new UserPage();
+        }
+        return UserPage;
+    }
+
+    public HomePage getHomePage() {
+        if (homePage == null) {
+            homePage = new HomePage();
+        }
+        return homePage;
     }
 }

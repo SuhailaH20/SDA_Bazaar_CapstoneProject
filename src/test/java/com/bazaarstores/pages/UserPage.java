@@ -16,13 +16,19 @@ import org.openqa.selenium.*;
 
 public class UserPage extends BasePage {
 
-    // ====== Locators ======
+    // ====== Locators (Add/Edit) ======
     private final By name = By.name("name");
     private final By email = By.name("email");
     private final By password = By.name("password");
     private final By password_confirmation = By.name("password_confirmation");
     private final By role = By.name("role");
     private final By SubmitButton = By.xpath("//*[@id=\"multiple-column-form\"]/div/div/div/div[2]/div/form/div[2]/div/button");
+
+    // ====== Locators (delete) ======
+    private final By confirmDeleteBtn = By.xpath("//button[contains(@class,'swal2-confirm') and contains(text(),'Yes, delete it!')]");
+    private final By cancelDeleteBtn = By.xpath("//button[contains(@class,'swal2-cancel') and contains(text(),'Cancel')]");
+
+    // ====== Locators (View all users) ======
     private final By searchField = By.cssSelector("input[placeholder='Search by email']");
     private final By searchButton = By.xpath("//button[contains(.,'Search')]");
     private final By usersTable = By.cssSelector("table");
@@ -31,15 +37,18 @@ public class UserPage extends BasePage {
     private final By paginationItems = By.xpath("//ul[contains(@class,'pagination')]//li[contains(@class,'page-item')]");
 
     // ====== Validation Messages ======
+    private final By requiredNameMessage = By.xpath("//li[contains(text(),'The name field is required.')]");
     private final By requiredEmailMessage = By.xpath("//li[contains(text(),'The email field is required.')]");
     private final By requiredPasswordMessage = By.xpath("//li[contains(text(),'The password field is required.')]");
     private final By shortPasswordMessage = By.xpath("//li[contains(text(),'The password field must be at least 6 characters.')]");
     private final By mismatchPasswordMessage = By.xpath("//li[contains(text(),'The password field confirmation does not match.')]");
     private final By duplicateEmailMessage = By.xpath("//li[.='The email has already been taken.']");
     private final By successToast = By.xpath("//div[@class='toast toast-success']");
+    private final By successDeleteToast = By.xpath("//div[contains(text(),'User deleted successfully')]");
+    private final By cannotDeleteAdminError = By.xpath("//*[@id=\"toast-container\"]/div/div[2]");
 
 
-    // ====== Actions ======
+    // ====== Actions (Add/Edit) ======
     public UserPage enterName(String nameValue) {
         Driver.getDriver().findElement(name).clear();
         Driver.getDriver().findElement(name).sendKeys(nameValue);
@@ -74,77 +83,81 @@ public class UserPage extends BasePage {
         WebElement submitBtn = wait.until(ExpectedConditions.elementToBeClickable(SubmitButton));
         ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].scrollIntoView(true);", submitBtn);
         ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].click();", submitBtn);
-   return this;
+        return this;
     }
 
-    public void clickEditForUserAcrossPages(String userEmail) {
+    public void clickEdit(String userEmail) {
         boolean userFound = false;
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(8));
+        JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
 
         while (true) {
-        try {
-             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//tbody//tr")));
-
-            //Get all rows from the current page
-            List<WebElement> rows = Driver.getDriver().findElements(By.xpath("//table//tbody/tr"));
-            for (int i = 1; i <= rows.size(); i++) {
             try {
-                // Read the email from the second column
-                WebElement emailCell = Driver.getDriver().findElement(By.xpath("//table//tbody/tr[" + i + "]/td[2]"));
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//tbody//tr")));
 
-                String actualEmail = emailCell.getText().trim().replaceAll("\\s+", "");
+                //Get all rows from the current page
+                List<WebElement> rows = Driver.getDriver().findElements(By.xpath("//table//tbody/tr"));
+                for (int i = 1; i <= rows.size(); i++) {
+                    try {
+                        // Read the email from the second column
+                        WebElement emailCell = Driver.getDriver().findElement(By.xpath("//table//tbody/tr[" + i + "]/td[2]"));
 
-                //Perform exact email comparison
-                if (actualEmail.equalsIgnoreCase(userEmail)) {
-                 System.out.println("Found exact match → " + actualEmail);
+                        String actualEmail = emailCell.getText().trim().replaceAll("\\s+", "");
+                        System.out.println("🔎 Checking row " + i + " → [" + actualEmail + "]");
 
-                 // Locate the Edit button in the same row
-                 WebElement editBtn = Driver.getDriver().findElement(By.xpath("//table//tbody/tr[" + i + "]//i[contains(@class,'bi-pencil-square')]"));
+                        //Perform exact email comparison
+                        if (actualEmail.equalsIgnoreCase(userEmail)) {
+                            System.out.println("Found exact match → " + actualEmail);
 
-                 // Scroll to the button and click it
-                 ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].scrollIntoView(true);", editBtn);
-                 ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].click();", editBtn);
+                            // Locate the Edit button in the same row
 
-                 userFound = true;
-                 break;
-                }
-                } catch (NoSuchElementException ignored) {}
+                            WebElement editBtn = Driver.getDriver().findElement(By.xpath("//table//tbody/tr[" + i + "]//i[contains(@class,'bi-pencil-square')]"));
+
+                            // Scroll to the button and click it
+                            ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].scrollIntoView(true);", editBtn);
+                            ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].click();", editBtn);
+
+                            userFound = true;
+                            break;
+                        }
+                    } catch (NoSuchElementException ignored) {}
                 }
 
                 if (userFound) break;
 
-                // Move to the next page if the 'Next' button is available
-                WebElement nextBtn = Driver.getDriver().findElement(By.xpath("//*[@id=\"table-bordered\"]/div/div/div/div[2]/nav/ul/li[6]/a"));
-                if (nextBtn.getAttribute("class").contains("disabled")) {
-                System.out.println("X -> No more pages left!");
+                // Get the "Next" button
+                WebElement nextBtn = Driver.getDriver().findElement(By.xpath("//*[@id=\"table-bordered\"]/div/div/div/div[2]/nav/ul/li[last()]/a"));
 
-                break;
+                // Stop if Next is disabled
+                if (nextBtn.getAttribute("class").contains("disabled")) {
+                    System.out.println(" X-> No more pages left!");
+                    break;
                 }
 
                 System.out.println("-> Moving to next page...");
-                ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].scrollIntoView(true);", nextBtn);
-                ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].click();", nextBtn);
+                js.executeScript("arguments[0].scrollIntoView(true);", nextBtn);
+                js.executeScript("arguments[0].click();", nextBtn);
 
-                wait.until(ExpectedConditions.stalenessOf(rows.get(0)));
 
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//tbody//tr[1]")));
+
+
+            } catch (StaleElementReferenceException e) {
+                System.out.println("Table reloaded, retrying...");
             } catch (Exception e) {
-              break;
+                break;
             }}
-                 assertTrue(" User with email (" + userEmail + ") not found in any page!", userFound);
+        assertTrue("User with email (" + userEmail + ") not found in any page!",userFound);
     }
 
-    // ====== Validations ======
+    // ====== Validations (Add/Edit) ======
     public UserPage validateSuccessMessage(String expectedMsg) {
-
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(8));
         WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(successToast));
-
         String actualMsg = toast.getText();
         assertTrue("Expected success message not found. Actual: " + actualMsg, actualMsg.contains(expectedMsg));
-
         return this;
     }
-
 
     // Generic validation method for any error message (DOM or browser popup).
     public UserPage ValidateErrorMessage(String expectedMsg) {
@@ -162,11 +175,10 @@ public class UserPage extends BasePage {
         // 2- Look for any on-page (DOM) validation error
         try {
             WebElement messageElement = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(3)).until(ExpectedConditions.presenceOfElementLocated(
-            By.xpath("//*[contains(text(),'" + expectedMsg + "')]")));
+                    By.xpath("//*[contains(text(),'" + expectedMsg + "')]")));
 
             String actualText = messageElement.getText().trim();
             assertTrue("Expected error message not found in page!", actualText.contains(expectedMsg));
-
 
         // 3- If not found in DOM, check if the browser itself triggered an HTML5 validation
         } catch (Exception e) {
@@ -183,7 +195,12 @@ public class UserPage extends BasePage {
     }
 
 
-    // ====== Specific Validations ======
+    // ====== Specific Validations (Add/Edit) ======
+    public UserPage validateRequiredName() {
+        assertEquals("The name field is required.",
+        Driver.getDriver().findElement(requiredNameMessage).getText());
+        return this;
+    }
 
     public UserPage validateRequiredEmail() {
         assertEquals("The email field is required.",
@@ -216,6 +233,82 @@ public class UserPage extends BasePage {
     }
 
 
+    // ====== Actions (Delete) ======
+    public void clickDelete(String userEmail) {
+        boolean userFound = false;
+        WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(8));
+        JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
+
+        while (true) {
+            try {
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//tbody//tr")));
+
+                //Get all user
+                List<WebElement> rows = Driver.getDriver().findElements(By.xpath("//table//tbody/tr"));
+                for (int i = 1; i <= rows.size(); i++) {
+                 WebElement emailCell = Driver.getDriver().findElement(By.xpath("//table//tbody/tr[" + i + "]/td[2]"));
+                 String actualEmail = emailCell.getText().trim();
+                 System.out.println("🔎 Checking row " + i + " → [" + actualEmail + "]");
+
+                if (actualEmail.equalsIgnoreCase(userEmail)) {
+                WebElement deleteBtn = Driver.getDriver().findElement(By.xpath("//table//tbody/tr[" + i + "]//i[contains(@class,'bi-trash3')]"));
+                js.executeScript("arguments[0].scrollIntoView(true);", deleteBtn);
+                js.executeScript("arguments[0].click();", deleteBtn);
+                userFound = true;
+                break;
+                }}
+
+                if (userFound) break;
+
+                WebElement nextBtn = Driver.getDriver().findElement(By.xpath("//*[@id=\"table-bordered\"]/div/div/div/div[2]/nav/ul/li[last()]/a"));
+                Thread.sleep(1000);
+
+                // Check if the “Next” button is disabled (no more pages)
+                if (nextBtn.getAttribute("class").contains("disabled")) {
+                System.out.println("No more pages left!");
+                break;
+                }
+
+                // Click on the next button
+                js.executeScript("arguments[0].click();", nextBtn);
+                Thread.sleep(1000);
+
+            }   catch (Exception e) {
+                break;
+            }}
+                assertTrue("X -> User with email (" + userEmail + ") not found in any page!", userFound);
+    }
+
+    public UserPage confirmDelete() {
+        WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(10));
+        WebElement confirmBtn = wait.until(ExpectedConditions.elementToBeClickable(confirmDeleteBtn));
+        ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].click();", confirmBtn);
+        return this;
+    }
+
+    public UserPage cancelDelete() {
+        WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(10));
+        WebElement cancelBtn = wait.until(ExpectedConditions.elementToBeClickable(cancelDeleteBtn));
+        ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].click();", cancelBtn);
+        return this;
+    }
+
+    //This is a bug! It is already reported!!!
+    public UserPage validateSuccessDeleteMessage() {
+        WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(8));
+        WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(successDeleteToast));
+        assertTrue("Success delete message not displayed!", toast.isDisplayed());
+        return this;
+    }
+
+    public UserPage validateCannotDeleteAdminError() {
+        WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(8));
+        WebElement errorMsg = wait.until(ExpectedConditions.visibilityOfElementLocated(cannotDeleteAdminError));
+        assertTrue("Expected error message not displayed!", errorMsg.isDisplayed());
+        return this;
+    }
+
+    // ====== Actions (View all users) ======
 
     // ---------- Table ----------
     public boolean isUsersTableDisplayedWithColumns(String name, String email ,String action) {
@@ -243,7 +336,6 @@ public class UserPage extends BasePage {
         return this;
     }
 
-
     // ---------- Validations ----------
     public boolean isUserDisplayedByEmail(String email) {
         waitForElementToBeVisible(usersTable);
@@ -270,10 +362,8 @@ public class UserPage extends BasePage {
                 emails.add(rowText);
             }
         }
-
         return emails.stream().allMatch(email -> email.contains(domain));
     }
-
 
     public boolean isNoUsersFoundMessageDisplayed(String message) {
         waitForElementToBeVisible(usersTable);
@@ -297,5 +387,4 @@ public class UserPage extends BasePage {
 
         return hasUsers && hasMultiplePages;
     }
-
 }

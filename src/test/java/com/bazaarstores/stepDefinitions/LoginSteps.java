@@ -4,7 +4,7 @@ import com.bazaarstores.pages.AllPages;
 import com.bazaarstores.utilities.ApiUtil;
 import com.bazaarstores.utilities.ConfigReader;
 import com.bazaarstores.utilities.Driver;
-import io.cucumber.java.PendingException;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -81,8 +81,24 @@ public class LoginSteps {
         allPages.getLoginPage().isValidationMessageDisplayed(field);
     }
 
+    @Then("user should see invalid email format error message")
+    public void userShouldSeeInvalidEmailFormatErrorMessage() {
+        allPages.getLoginPage().isValidationMessageDisplayed("email");
+    }
+
     @Given("user goes to homepage")
     public void userGoesToHomepage() {
         Driver.getDriver().get(ConfigReader.getBaseUrl());
     }
-}
+
+    //Lama
+    @Given("admin is logged in successfully")
+    public void admin_is_logged_in_successfully() {
+        Driver.getDriver().get(ConfigReader.getBaseUrl());
+        allPages.getLoginPage()
+        .enterEmail(ConfigReader.getAdminEmail())
+        .enterPassword(ConfigReader.getDefaultPassword());
+        allPages.getLoginPage().clickLoginButton();
+        org.junit.Assert.assertTrue("Admin dashboard should be visible", allPages.getDashboardPage().isProfileVisitChartDisplayed()
+        );
+    }}

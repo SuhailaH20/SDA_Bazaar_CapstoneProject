@@ -5,6 +5,7 @@ import com.bazaarstores.utilities.ConfigReader;
 import com.bazaarstores.utilities.Driver;
 import io.restassured.response.Response;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -29,13 +30,16 @@ public class HomePage extends BasePage {
     private final By cartPrice = By.cssSelector(".cart-item-price");
     private final By removeBtn = By.cssSelector(".remove-item");
     private final By subtotal = By.cssSelector(".cart-subtotal");
+    private final By profile = By.cssSelector("div.profile-icon");
+    private final By logoutButton = By.xpath("//a[normalize-space()='Log Out']");
     private final By viewCartBtn = By.xpath("//a[@class='cart-button view-cart']");
     private final By emptyMsg = By.xpath("//*[contains(text(),'Your cart is empty')]");
     private final By addSuccessMsg = By.xpath("//*[contains(text(),'Product added to cart successfully') or contains(text(),'Success!')]");
     private final By removeSuccessMsg = By.xpath("//*[contains(text(),'The item was successfully removed from the cart') or contains(text(),'Item Removed')]");
 
     private static int productId;
-    private static String token;
+    private static String storeManagerToken;
+    private static String customerToken;
 
     // ---------- Core Fluent Actions ----------
 
@@ -99,22 +103,55 @@ public class HomePage extends BasePage {
 
     public HomePage clearCartIfNotEmpty() {
         hoverOverCartIcon();
-        if (isDisplayed(cartName)) {
-            List<String> items = getAllProductsInPopupCart();
-            for (int i = 0; i < items.size(); i++) {
-                click(removeBtn);
-            }
-            System.out.println("Cart cleared before test scenario");
+
+        List<WebElement> currentItems = findElements(cartName);
+        if (currentItems.isEmpty()) {
+            System.out.println("Cart already empty.");
+            return this;
         }
+
+        int safetyCounter = 0;
+        while (!findElements(cartName).isEmpty() && safetyCounter < 10) {
+            List<WebElement> removeButtons = findElements(removeBtn);
+
+            if (removeButtons.isEmpty()) break;
+
+            for (WebElement btn : removeButtons) {
+                try {
+                    btn.click();
+                    new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(2))
+                            .until(ExpectedConditions.stalenessOf(btn));
+                    Thread.sleep(300);
+                } catch (Exception e) {
+                    System.out.println("Retry removing item...");
+                }
+            }
+            hoverOverCartIcon();
+            safetyCounter++;
+        }
+
+        new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(8))
+                .pollingEvery(Duration.ofMillis(300))
+                .ignoring(NoSuchElementException.class)
+                .ignoring(StaleElementReferenceException.class)
+                .until(driver -> {
+                    hoverOverCartIcon();
+                    return findElements(cartName).isEmpty();
+                });
+
+        System.out.println("Cleared cart of existing products.");
         return this;
     }
+
+
+
 
     // ---------- Cart Count & Subtotal ----------
     public boolean isCartCountIncreasedBy(int initial, int increase) {
         int expected = initial + increase;
         FluentWait<WebDriver> wait = new FluentWait<>(Driver.getDriver())
-                .withTimeout(Duration.ofSeconds(3))
-                .pollingEvery(Duration.ofMillis(100))
+                .withTimeout(Duration.ofSeconds(8))
+                .pollingEvery(Duration.ofMillis(150))
                 .ignoring(NoSuchElementException.class, StaleElementReferenceException.class);
 
         try {
@@ -223,19 +260,46 @@ public class HomePage extends BasePage {
 
     public CartPage clickViewCartButton() {
         hoverOverCartIcon();
-        click(viewCartBtn);
+
+        WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(10));
+        wait.pollingEvery(Duration.ofMillis(300))
+                .ignoring(NoSuchElementException.class)
+                .ignoring(StaleElementReferenceException.class)
+                .until(ExpectedConditions.visibilityOfElementLocated(viewCartBtn));
+
+        try {
+            WebElement button = findElement(viewCartBtn);
+            wait.until(ExpectedConditions.elementToBeClickable(button));
+            button.click();
+            System.out.println("Clicked 'View Cart' button");
+        } catch (Exception e) {
+            System.out.println("View Cart button not clickable yet, retrying via JS...");
+            WebElement button = findElement(viewCartBtn);
+            ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].click();", button);
+        }
+
         return new CartPage();
     }
 
+
     public HomePage removeFirstProductFromCart() {
         hoverOverCartIcon();
+        waitForElementToBeVisible(removeBtn);
         click(removeBtn);
         return this;
     }
 
+    public void clickProfile(){
+        click(profile);
+    }
+
+    public LoginPage clickLogout(){
+        click(logoutButton);
+        return new LoginPage();
+    }
     // ---------- API Utilities ----------
     public HomePage createOutOfStockProductApi(String name) {
-        token = ApiUtil.loginAndGetToken(
+        storeManagerToken = ApiUtil.loginAndGetToken(
                 ConfigReader.getStoreManagerEmail(), ConfigReader.getDefaultPassword());
         String body = String.format("""
                 {
@@ -253,7 +317,7 @@ public class HomePage extends BasePage {
 
         Response r = given()
                 .baseUri(ConfigReader.getApiBaseUrl())
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + storeManagerToken)
                 .contentType("application/json")
                 .body(body)
                 .post("/products/create");
@@ -267,7 +331,7 @@ public class HomePage extends BasePage {
     public HomePage deleteProductApi(String name) {
         Response r = given()
                 .baseUri(ConfigReader.getApiBaseUrl())
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + storeManagerToken)
                 .delete("/products/" + productId);
 
         if (r.statusCode() == 200 || r.statusCode() == 204)
@@ -276,4 +340,32 @@ public class HomePage extends BasePage {
             System.out.println("Failed to delete product. Status: " + r.statusCode());
         return this;
     }
+
+    public boolean verifyProductExistsInBackendCart(String productName) {
+        customerToken = ApiUtil.loginAndGetToken(
+                ConfigReader.getCustomerEmail(),
+                ConfigReader.getDefaultPassword()
+        );
+
+        Response response = ApiUtil.getWithCsrf("/api/customer/cart", customerToken);
+        ApiUtil.verifyStatusCode(response, 200);
+
+        List<String> itemNames = response.jsonPath().getList("items.name");
+        boolean exists = itemNames.stream().anyMatch(name -> name.equalsIgnoreCase(productName));
+
+        System.out.println("Backend cart items: " + itemNames);
+        return exists;
+    }
+
+    public boolean verifyProductDeletedFromCartBackend() {
+
+        Response response = ApiUtil.getWithAuth("/cart", customerToken);
+        ApiUtil.verifyStatusCode(response, 200);
+
+        int itemCount = response.jsonPath().getList("items").size();
+        System.out.println("Current backend cart items count: " + itemCount);
+
+        return itemCount == 0;
+    }
+
 }

@@ -5,8 +5,11 @@ import com.bazaarstores.pages.HomePage;
 import com.bazaarstores.pages.LoginPage;
 import com.bazaarstores.utilities.ConfigReader;
 import com.bazaarstores.utilities.Driver;
+import io.cucumber.java.PendingException;
 import io.cucumber.java.en.*;
 import org.junit.Assert;
+
+import java.util.List;
 
 public class CartStep {
 
@@ -24,6 +27,9 @@ public class CartStep {
         loginPage.loginAsCustomer(ConfigReader.getCustomerEmail(), ConfigReader.getDefaultPassword())
                 .waitForUrlContains("customer");
         homePage.clearCartIfNotEmpty();
+
+        initialCount = homePage.getCartCount();
+        System.out.println("Initial cart count at Given: " + initialCount);
     }
 
     @Given("User is logged in")
@@ -39,7 +45,6 @@ public class CartStep {
     @When("User clicks Add to Cart button for product {string}")
     public void userClicksAddToCartButton(String productName) {
         homePage.refreshPage();
-        initialCount = homePage.getCartCount();
         homePage.addProductToCart(productName);
     }
 
@@ -56,9 +61,14 @@ public class CartStep {
 
     @Then("Both products {string} and {string} should appear in the cart")
     public void bothProductsShouldAppear(String p1, String p2) {
-        Assert.assertTrue("Missing expected products in popup cart!",
-                homePage.getAllProductsInPopupCart().contains(p1) &&
-                        homePage.getAllProductsInPopupCart().contains(p2));
+        List<String> products = homePage.getAllProductsInPopupCart();
+
+        System.out.println("Products found in popup cart: " + products);
+        Assert.assertTrue("Product '" + p1 + "' not found in popup cart!",
+                homePage.isProductInCart(p1));
+        Assert.assertTrue("Product '" + p2 + "' not found in popup cart!",
+                homePage.isProductInCart(p2));
+
     }
 
     @Then("Cart subtotal should be correct")
@@ -103,7 +113,7 @@ public class CartStep {
     public void userHasAtLeastOneProductInCart() {
         if (homePage.isCartEmpty()) {
             homePage.addProductToCart("Flower");
-            homePage.addProductToCart("Jeans");
+            //homePage.addProductToCart("Jeans");
         }
     }
 
@@ -115,7 +125,7 @@ public class CartStep {
     @When("User hovers over the cart icon")
     public void hoverOverCartIcon() {
         homePage.hoverOverCartIcon();
-        System.out.println("🛒 Hovered over cart icon");
+        System.out.println("Hovered over cart icon");
     }
 
     @Then("Popup cart should display product names, prices, and subtotal")
@@ -225,5 +235,34 @@ public class CartStep {
     public void verifyUserCannotProceedToConfirm() {
         Assert.assertFalse("User should not be able to confirm when cart is empty!",
                 homePage.isViewCartButtonVisible());
+    }
+
+    @And("The shopping cart should not contain the deleted product in backend")
+    public void theShoppingCartShouldNotContainTheDeletedProductInBackend() {
+        boolean isDeleted = homePage.verifyProductDeletedFromCartBackend();
+        Assert.assertTrue("Deleted product still exists in backend cart!", isDeleted);
+    }
+
+    @And("The backend cart should contain the product {string}")
+    public void theBackendCartShouldContainTheProduct(String productName) {
+        boolean exists = homePage.verifyProductExistsInBackendCart(productName);
+        Assert.assertTrue("Product '" + productName + "' not found in backend cart!", exists);
+    }
+
+    @And("The backend cart should contain the products {string} and {string}")
+    public void theBackendCartShouldContainTheProductsAnd(String p1, String p2) {
+        boolean exists1 = homePage.verifyProductExistsInBackendCart(p1);
+        boolean exists2 = homePage.verifyProductExistsInBackendCart(p2);
+        Assert.assertTrue("Product '" + p1 + "' not found in backend cart!", exists1);
+        Assert.assertTrue("Product '" + p2 + "' not found in backend cart!", exists2);
+    }
+
+    @And("The backend cart should not contain the product {string}")
+    public void theBackendCartShouldNotContainTheProduct(String productName) {
+        homePage.refreshPage();
+        homePage.deleteProductApi(productName);
+        homePage.refreshPage();
+        boolean exists = homePage.verifyProductExistsInBackendCart(productName);
+        Assert.assertFalse("Product '" + productName + "' still exists in backend cart!", exists);
     }
 }
