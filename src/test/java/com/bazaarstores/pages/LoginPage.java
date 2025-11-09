@@ -30,6 +30,11 @@ public class LoginPage extends BasePage {
         return new DashboardPage();
     }
 
+    public HomePage clickLoginAsCustomer() {
+        click(loginButton);
+        return new HomePage();
+    }
+
     public RegistrationPage clickRegisterLink() {
         click(signUp);
         return new RegistrationPage();
@@ -40,6 +45,12 @@ public class LoginPage extends BasePage {
         enterEmail(email);
         enterPassword(password);
         return clickLoginButton();
+    }
+
+    public HomePage loginAsCustomer(String email, String password) {
+        enterEmail(email);
+        enterPassword(password);
+        return clickLoginAsCustomer();
     }
 
     // Verification Methods

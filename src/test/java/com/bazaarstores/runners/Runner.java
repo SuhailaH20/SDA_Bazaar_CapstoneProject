@@ -14,9 +14,8 @@ import org.junit.runner.RunWith;
         },
         features = "src/test/resources/features",
         glue = "com.bazaarstores.stepDefinitions",
-        tags = "@AdminSessionTermination",//@NegativeRegistration
+        tags = "@AddToCart",//@NegativeRegistration
         dryRun = false
-
 )
 public class Runner {
 }

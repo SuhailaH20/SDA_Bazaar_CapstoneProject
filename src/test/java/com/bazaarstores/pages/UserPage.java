@@ -1,5 +1,6 @@
 package com.bazaarstores.pages;
 
+import com.bazaarstores.pages.BasePage;
 import com.bazaarstores.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -118,8 +119,10 @@ public class UserPage extends BasePage {
 
                             userFound = true;
                             break;
-                        }} catch (NoSuchElementException ignored) {}
+                        }
+                    } catch (NoSuchElementException ignored) {}
                 }
+
                 if (userFound) break;
 
                 // Get the "Next" button
@@ -135,7 +138,9 @@ public class UserPage extends BasePage {
                 js.executeScript("arguments[0].scrollIntoView(true);", nextBtn);
                 js.executeScript("arguments[0].click();", nextBtn);
 
+
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//tbody//tr[1]")));
+
 
             } catch (StaleElementReferenceException e) {
                 System.out.println("Table reloaded, retrying...");
@@ -182,12 +187,13 @@ public class UserPage extends BasePage {
             String browserMsg = (String) js.executeScript("return arguments[0].validationMessage;", emailField);
             System.out.println("Browser validation message: " + browserMsg);
 
-        // Assert that the browser validation message matches (case-insensitive & trimmed)
+            // Assert that the browser validation message matches (case-insensitive & trimmed)
             assertTrue("Expected browser validation popup not found!\nExpected (part): " + expectedMsg + "\nActual: " + browserMsg,
             browserMsg.replaceAll("\\s+", " ").toLowerCase().contains(expectedMsg.replaceAll("\\s+", " ").toLowerCase().trim()));
         }
         return this;
     }
+
 
     // ====== Specific Validations (Add/Edit) ======
     public UserPage validateRequiredName() {
@@ -225,6 +231,7 @@ public class UserPage extends BasePage {
         Driver.getDriver().findElement(duplicateEmailMessage).getText());
         return this;
     }
+
 
     // ====== Actions (Delete) ======
     public void clickDelete(String userEmail) {
@@ -302,6 +309,7 @@ public class UserPage extends BasePage {
     }
 
     // ====== Actions (View all users) ======
+
     // ---------- Table ----------
     public boolean isUsersTableDisplayedWithColumns(String name, String email ,String action) {
         waitForElementToBeVisible(usersTable);
