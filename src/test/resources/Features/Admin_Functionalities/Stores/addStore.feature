@@ -20,7 +20,7 @@ Feature: Add Store as Admin Feature
     Then Admin should see success message for adding store
     And Verify the store addition successfully via API with store name ""
 
-  @Bug1
+  @Bug
   Scenario: Add Store with Mandatory Fields Only
     When Admin clicks on Add store button
     And Admin enter store name ""
@@ -66,7 +66,7 @@ Feature: Add Store as Admin Feature
 
 
 
-  @NegativeTests3 @Bug2
+  @NegativeTests3 @Bug
   Scenario: verify error message when Store Admin is missing
     When Admin clicks on Add store button
     And Admin enter store name "Bazaar Store 1"
