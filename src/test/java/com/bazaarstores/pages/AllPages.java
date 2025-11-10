@@ -10,7 +10,7 @@ public class AllPages {
     private StorsPage storsPage;
     private AddStoreAsAdminPage addStoreAsAdminPage;
 
-private HomePage homePage;
+    private HomePage homePage;
 
     public LoginPage getLoginPage() {
         if (loginPage == null) {
@@ -54,5 +54,12 @@ private HomePage homePage;
             UserPage = new UserPage();
         }
         return UserPage;
+    }
+
+    public HomePage getHomePage() {
+        if (homePage == null) {
+            homePage = new HomePage();
+        }
+        return homePage;
     }
 }
