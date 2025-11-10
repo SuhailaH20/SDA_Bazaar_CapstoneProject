@@ -1,71 +1,24 @@
 package com.bazaarstores.stepDefinitions;
 
+import com.bazaarstores.pages.FavoritesPage;
+import com.bazaarstores.pages.ProductPage;
+import com.bazaarstores.utilities.ConfigReader;
+import com.bazaarstores.utilities.Driver;
 import io.cucumber.java.en.*;
+import org.junit.Assert;
 
 public class FavoritesSteps {
 
-    @Given("user is logged in")
-    public void userIsLoggedIn() {
-        System.out.println("User logged in successfully.");
-    }
+    ProductPage productPage = new ProductPage();
+    FavoritesPage favoritesPage = new FavoritesPage();
 
-    @When("user clicks the heart icon on product {string}")
-    public void userClicksHeartIcon(String productName) {
-        System.out.println("Clicked heart icon on product: " + productName);
-    }
+    @When("User clicks heart icon for product {string} and verifies it in favorites")
+    public void user_clicks_heart_icon_and_verifies(String productName) {
 
-    @Then("product should appear under {string} list")
-    public void productAppearsUnderList(String listName) {
-        System.out.println("Product appears in: " + listName);
-    }
+        productPage.clickHeartIconForProduct(productName);
 
-    @Then("heart icon should not turn red on Home page")
-    public void heartIconNotRedHome() {
-        System.out.println("Heart icon not red on Home page.");
-    }
+        Driver.getDriver().get(ConfigReader.getBaseUrl() + "/favorites");
 
-    @Then("heart icon should turn red on Favorites page")
-    public void heartIconRedFavorites() {
-        System.out.println("Heart icon red on Favorites page.");
-    }
-
-    @Given("product {string} is already in favorites")
-    public void productAlreadyInFavorites(String productName) {
-        System.out.println(productName + " is already in favorites.");
-    }
-
-    @When("user clicks heart icon again")
-    public void userClicksHeartAgain() {
-        System.out.println("User clicked heart icon again.");
-    }
-
-    @Then("system should display message {string}")
-    public void systemDisplaysMessage(String message) {
-        System.out.println("Displayed message: " + message);
-    }
-
-    @Then("product should be added to favorites and heart icon should turn red")
-    public void productAddedAndHeartRed() {
-        System.out.println("Product added and heart turned red.");
-    }
-
-    @Given("user has favorite products")
-    public void userHasFavorites() {
-        System.out.println("User already has favorite products.");
-    }
-
-    @When("user navigates to {string} page")
-    public void userNavigatesToPage(String pageName) {
-        System.out.println("Navigated to: " + pageName);
-    }
-
-    @Then("all added products should be displayed correctly")
-    public void productsDisplayedCorrectly() {
-        System.out.println("All favorite products displayed correctly.");
-    }
-
-    @Then("system should prevent adding duplicate product")
-    public void preventDuplicateFavorites() {
-        System.out.println("System prevented duplicate favorites.");
+        Assert.assertTrue("Product not found in favorites", favoritesPage.isProductInFavorites(productName));
     }
 }
