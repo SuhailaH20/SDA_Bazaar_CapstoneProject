@@ -5,9 +5,9 @@ Feature: Logout functionality
     Given user goes to homepage
     And user enters email "customer@sda.com" and password "Password.12345"
     And user clicks login button
-
+#user enters valid customer credentials
   #[US03_TC01]
-  @PositiveLogout
+  @PositiveLogout @CustomerLogout
   Scenario: Validate successful logout
     When user clicks profile
     And user clicks logout
@@ -23,7 +23,7 @@ Feature: Logout functionality
     Then user should be redirected to login page
 
     #[US03_TC03]
-  @PositiveLogout @AutoLogout
+  @PositiveLogout @AutoLogout @Bug
   Scenario: Auto logout after 10 minutes of inactivity
     When user remains idle for 3 minutes
     Then user should be redirected to login page
