@@ -1,4 +1,4 @@
-@EditStoreAsAdmin
+@EditStoreAsAdmin   @AdminStore
 Feature: Edit Store As Admin Feature
 
 

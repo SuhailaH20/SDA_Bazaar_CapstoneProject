@@ -1,4 +1,4 @@
-@Smoke @UI @US05
+@Smoke @UI @US05    @Customer
 Feature: US05 - Validate product details page functionality
 
   Background:

@@ -1,4 +1,4 @@
-@Smoke @UI @US04
+@Smoke @UI @US04    @Customer
 Feature: US04 - Validate product display on customer home page
 
   Background:

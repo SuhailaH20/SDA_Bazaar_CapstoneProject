@@ -1,4 +1,4 @@
-@UI @AddToCart
+@UI @AddToCart  @Customer
 Feature: Add Product to Cart Functionality
 
   Background:

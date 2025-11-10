@@ -1,4 +1,4 @@
-@AdminAddUser
+@AdminAddUser   @AdminUser
 Feature: Admin Add User Functionality
   As an Admin
   I want to be able to add users from the Add User Page

@@ -1,4 +1,4 @@
-@DeleteStoreAsAdmin
+@DeleteStoreAsAdmin   @AdminStore
 Feature: Delet Store As Admin Feature
 
 

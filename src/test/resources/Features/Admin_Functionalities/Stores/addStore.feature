@@ -1,4 +1,4 @@
-@AddStoreAsAdmin
+@AddStoreAsAdmin @AdminStore
 Feature: Add Store as Admin Feature
 
 

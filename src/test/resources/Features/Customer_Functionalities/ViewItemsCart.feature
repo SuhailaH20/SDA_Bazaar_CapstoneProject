@@ -1,4 +1,4 @@
-@UI @ViewIّّtemsInCart
+@UI @ViewIّّtemsInCart    @Customer
 Feature: View items in the cart as a customer
 
   Background:

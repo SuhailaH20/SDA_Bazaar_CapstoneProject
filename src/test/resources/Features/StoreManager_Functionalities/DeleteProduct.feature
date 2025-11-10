@@ -1,4 +1,4 @@
-@DeleteProduct
+@DeleteProduct    @StoreManager
 Feature: Delete Product Functionality
   As a Store Manager
   I want to delete products from the catalog

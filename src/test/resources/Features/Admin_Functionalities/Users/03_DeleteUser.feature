@@ -1,4 +1,4 @@
-@AdminDeleteUser
+@AdminDeleteUser    @AdminUser
 Feature: Admin Delete User Functionality
   As an Admin
   I want to delete users and validate confirmation and API behavior

@@ -1,4 +1,4 @@
-@EditProduct
+@EditProduct  @StoreManager
 Feature: Edit Product Functionality
   As a Store Manager
   I want to add new products to the catalog
