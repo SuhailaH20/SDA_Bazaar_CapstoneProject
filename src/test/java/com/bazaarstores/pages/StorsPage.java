@@ -6,9 +6,12 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 import static com.bazaarstores.utilities.ApiUtilities.spec;
@@ -26,7 +29,7 @@ private final By SuccessAddMessage = By.xpath("//div[@class=\"toast toast-succes
 private final By SuccessUpdateMessag = By.xpath("//div[@class=\"toast-message\"]");
 private final By ConfirmationDialogMessag = By.xpath("//div[@aria-labelledby=\"swal2-title\"]");
 private final By ConfirmDeleteButton = By.xpath("//button[@class=\"swal2-confirm swal2-styled swal2-default-outline\"]");
-private final By SuccessdeleteMessag = By.xpath("//div[@class=\"toast-message\"]");
+private final By SuccessdeleteMessag = By.xpath("//div[@class=\"toast-message\"]");////div[@class="toast-message"]
 private final By CancelButton = By.xpath("//button[@class=\"swal2-cancel swal2-styled swal2-default-outline\"]");
 private final By backdrop = By.xpath("//div[@class=\"swal2-container swal2-center swal2-backdrop-show\"]");
 
@@ -92,7 +95,7 @@ private final By backdrop = By.xpath("//div[@class=\"swal2-container swal2-cente
     public StorsPage clickdeleteButtonForStore(String storeName) {
         String editIconXpath = String.format("//td[text()='%s']/following-sibling::td//i[@class=\"bi bi-trash3\"]", storeName);
 
-
+        waitForElementToDisappear(SuccessAddMessage);
         Driver.getDriver().findElement(By.xpath(editIconXpath)).click();
 
         return this;
@@ -111,14 +114,25 @@ private final By backdrop = By.xpath("//div[@class=\"swal2-container swal2-cente
 
         click(ConfirmDeleteButton);
         waitForElementToDisappear(ConfirmDeleteButton);
+
         return this;
     }
 
 
     public StorsPage isSuccessDeleteMessageDisplayed(){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(SuccessdeleteMessag));
-        Assert.assertTrue(isDisplayed(SuccessdeleteMessag));
-        return this;}
+       try {
+       // Wait longer for delete operations as they might take more time
+       WebDriverWait longWait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(20));
+        longWait.until(ExpectedConditions.visibilityOfElementLocated(SuccessdeleteMessag));
+          Assert.assertTrue(isDisplayed(SuccessdeleteMessag));
+            } catch (TimeoutException e) {
+                throw new AssertionError("Delete success message did not appear within 20 seconds", e);
+            }
+            return this;}
+
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(SuccessdeleteMessag));
+//       isDisplayed(SuccessdeleteMessag);
+//        return this;}
 
 
 
