@@ -1,4 +1,4 @@
-@Smoke @UI @US07
+@Smoke @UI @US07    @Customer
 Feature: US07 - Validate adding and managing favorites list
 
   Background:

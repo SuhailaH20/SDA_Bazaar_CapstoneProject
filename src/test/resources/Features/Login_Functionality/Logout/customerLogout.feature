@@ -1,4 +1,4 @@
-@Logout
+@Logout   @Login
 Feature: Logout functionality
 
   Background:

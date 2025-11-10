@@ -1,4 +1,4 @@
-@AdminLogout
+@AdminLogout  @Login
 Feature: Logout functionality
 
   Background:

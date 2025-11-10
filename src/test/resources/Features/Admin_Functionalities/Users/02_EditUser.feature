@@ -1,5 +1,4 @@
-
-@AdminEditUser
+@AdminEditUser    @AdminUser
 Feature: Admin Edit User Functionality
   As an Admin
   I want to edit existing users and validate updates and validations via UI and API

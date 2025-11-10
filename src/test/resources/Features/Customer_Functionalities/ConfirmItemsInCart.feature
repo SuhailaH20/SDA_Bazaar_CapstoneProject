@@ -1,4 +1,4 @@
-@UI @ConfirmItemsInCart
+@UI @ConfirmItemsInCart   @Customer
 Feature: Confirm items in the cart as a customer
 
   Background:
