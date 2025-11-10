@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 public class AddStoreAsAdminPage extends BasePage {
     private final By NameField = By.id("first-name-column");
     private final By LocationField = By.id("location-id-column");
-    private final By DescriptionField = By.tagName("p");
+    private final By DescriptionField = By.xpath("//body[@id=\"tinymce\"]");
     private final By SelectAdmin = By.id("admin-column");
     private final By ClickSubmit = By.xpath("//button[@type=\"submit\"]");
     private final By iframelocater = By.xpath("//iframe");
