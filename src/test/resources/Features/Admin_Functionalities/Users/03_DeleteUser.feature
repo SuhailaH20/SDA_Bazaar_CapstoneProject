@@ -9,14 +9,14 @@ Feature: Admin Delete User Functionality
     And admin navigates to Users list page
 
   @Positive
-  Scenario: US17_TC001 Verify admin can delete a Customer user
+  Scenario: BUG: US17_TC001 Verify admin can delete a Customer user
     And admin clicks delete for the user with email "sara@test.com"
     And admin confirms delete action
     Then BUG: System displayed "Error: You cant delete a admin role users!" instead of showing 'User deleted successfully.'
     And BUG: User "sara@test.com" remains in API
 
   @Positive
-  Scenario: US17_TC002 Verify admin can delete a Store Manager user
+  Scenario: BUG: US17_TC002 Verify admin can delete a Store Manager user
     And admin clicks delete for the user with email "123@example.com"
     And admin confirms delete action
     Then BUG: System displayed "Error: You cant delete a admin role users!" instead of showing 'User deleted successfully.'

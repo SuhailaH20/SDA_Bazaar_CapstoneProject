@@ -51,7 +51,7 @@ Feature: Admin Edit User Functionality
 
 
   @Negative
-  Scenario: US16_TC005 Verify error when name is empty
+  Scenario: BUG: US16_TC005 Verify error when name is empty
     And admin clicks edit for the user with email "Diyala@example"
     And admin updates name to ""
     And admin enters Password "Diyala12"
@@ -65,7 +65,7 @@ Feature: Admin Edit User Functionality
 
 
   @Negative
-  Scenario: US16_TC006 Verify error when email is empty
+  Scenario: BUG: US16_TC006 Verify error when email is empty
     And admin clicks edit for the user with email "Diyala@example"
     And admin updates email to ""
     And admin enters Password "Diyala12"
@@ -79,7 +79,7 @@ Feature: Admin Edit User Functionality
 
 
   @Negative
-  Scenario: US16_TC007 Verify system accepts empty password
+  Scenario: BUG: US16_TC007 Verify system accepts empty password
     And admin clicks edit for the user with email "Diyala@example"
     And admin enters Password ""
     And admin enters Password Confirmation "Diyala12"
@@ -88,7 +88,7 @@ Feature: Admin Edit User Functionality
     And Verify user update "Diyala@example" in API with invalid data
 
   @Negative
-  Scenario: US16_TC008 Verify system accepts empty confirm password
+  Scenario: BUG: US16_TC008 Verify system accepts empty confirm password
     And admin clicks edit for the user with email "Diyala@example"
     And admin enters Password "Diyala12"
     And admin enters Password Confirmation ""
@@ -98,7 +98,7 @@ Feature: Admin Edit User Functionality
 
 
   @Negative
-  Scenario: US16_TC009 Verify error when role is null
+  Scenario: BUG: US16_TC009 Verify error when role is null
     And admin clicks edit for the user with email "Diyala@example"
     And admin updates role to "Select a Role"
     And admin enters Password "Diyala12"
@@ -112,7 +112,7 @@ Feature: Admin Edit User Functionality
 
 
   @Negative
-  Scenario: US16_TC010 Verify system accepts weak password
+  Scenario: BUG: US16_TC010 Verify system accepts weak password
     And admin clicks edit for the user with email "sara@test.com"
     And admin enters Password "123"
     And admin enters Password Confirmation "123"
@@ -122,7 +122,7 @@ Feature: Admin Edit User Functionality
 
 
   @Negative
-  Scenario: US16_TC011 Verify error for duplicate email
+  Scenario: BUG: US16_TC011 Verify error for duplicate email
     And admin clicks edit for the user with email "sara@test.com"
     And admin updates email to "sara12@test.com"
     And admin enters Password "123"
