@@ -1,9 +1,6 @@
 package com.bazaarstores.pages;
 
-import com.bazaarstores.utilities.ApiUtil;
-import com.bazaarstores.utilities.ConfigReader;
 import com.bazaarstores.utilities.Driver;
-import io.restassured.response.Response;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -12,7 +9,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
@@ -86,34 +82,23 @@ public class ProductCreatePage extends BasePage {
         System.out.println("General error box displayed.");
         return this;
     }
+    public ProductPage cleanUpProductByName(String lastCreatedProductName) {
+        try {
 
-    // 🔹 API Verifications
-    public ProductCreatePage verifyProductCreatedInApi(String sku) {
-        Assert.assertTrue("Product not found in API: " + sku, isProductInApi(sku));
-        System.out.println("Product found in API: " + sku);
-        return this;
+            ProductPage productPage = new ProductPage();
+            if (productPage.isProductVisible(lastCreatedProductName)) {
+                System.out.println("Deleting product with name: " + lastCreatedProductName);
+                productPage.clickDeleteButton(lastCreatedProductName);
+                productPage.confirmDelete();
+                System.out.println("Product " + lastCreatedProductName + " deleted successfully.");
+            } else {
+                System.out.println("Product not found, skipping cleanup.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Cleanup failed: " + e.getMessage());
+        }
+        return new ProductPage();
     }
 
-    public ProductCreatePage verifyProductNotCreatedInApi(String sku) {
-        Assert.assertFalse("Product unexpectedly exists in API: " + sku, isProductInApi(sku));
-        System.out.println("Product not found in API as expected: " + sku);
-        return this;
-    }
-
-    // 🔹 API logic
-    public boolean isProductInApi(String sku) {
-        String token = ApiUtil.loginAndGetToken(
-                ConfigReader.getStoreManagerEmail(),
-                ConfigReader.getDefaultPassword());
-
-        Response response = given()
-                .baseUri(ConfigReader.getApiBaseUrl())
-                .header("Authorization", "Bearer " + token)
-                .accept("application/json")
-                .get("/products");
-
-        ApiUtil.verifyStatusCode(response, 200);
-        List<String> allSkus = response.jsonPath().getList("products.sku");
-        return allSkus.contains(sku);
-    }
 }
