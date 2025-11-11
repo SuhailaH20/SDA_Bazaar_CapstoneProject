@@ -193,7 +193,7 @@ Feature: Admin Add User Functionality
     And verify user with name "@" and email "123@example.com" does not exist in API
 
   @Negative @Bug
-  Scenario: BUG: Verify system accepts uppercase email *
+  Scenario: BUG: US15_TC017 Verify system accepts uppercase email *
     And admin enters name "Rawan"
     And admin enters email "RAWAN@EXAMPLE.COM"
     And admin enters password "Ra1234567"
