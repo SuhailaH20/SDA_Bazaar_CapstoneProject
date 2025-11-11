@@ -3,8 +3,7 @@ Feature:View Store as Admin Feature
 
     Background:
      Given user goes to homepage
-     When user enters email "admin@sda.com" and password "Password.12345"
-     And user clicks login button
+     When admin is logged in successfully
 
 
 
