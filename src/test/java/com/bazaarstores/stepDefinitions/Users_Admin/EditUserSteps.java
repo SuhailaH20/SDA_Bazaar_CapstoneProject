@@ -10,6 +10,10 @@ import io.cucumber.java.en.Then;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.*;
 
@@ -20,6 +24,7 @@ public class EditUserSteps {
     public static String updatedName;
     public static String updatedPassword;
     public static String updatedRole;
+    public static String updatedPasswordConfirmation;
 
     // ====== Navigation ======
     @Given("user goes to Dashboard")
@@ -84,35 +89,44 @@ public class EditUserSteps {
         pages.getUserPage().validateSuccessMessage(expectedMsg);
     }
 
-    // ====== Bug Handling ======
-    @Then("BUG: system restores old value instead of showing error {string}")
+    // ====== Bug ======
+    @Then("BUG: system restored old value instead of showing error {string}")
     public void bugSystemRestoresOldValue(String expectedMsg) {
         System.out.println("🐞 BUG DETECTED: System restored old value instead of showing error message: " + expectedMsg);
         assertTrue("BUG CONFIRMED → Field restored old value", true);
     }
 
-    @Then("BUG: System accepts invalid data instead of showing error {string} with note {string}")
-    public void bugSystemAcceptsInvalidDataInsteadOfShowingError(String expectedErrorMsg, String bugNote) {
+    @Then("System Should display error message {string}")//
+    public void systemShouldDisplayErrorMessage(String expectedErrorMsg) {
         try {
             boolean successAppeared = Driver.getDriver().findElements(By.xpath("//div[contains(@class,'toast-success')]")).size() > 0;
 
             if (successAppeared) {
-                System.out.println("Expected Error: " + expectedErrorMsg);
-                assertTrue("BUG CONFIRMED → " + bugNote, true);
+                assertTrue("❌ BUG: System accepted invalid data instead of showing error → " + expectedErrorMsg, false);
             } else {
-                fail("No success message found — possible different bug.");
+                assertTrue("Error message appeared as expected.", true);
             }
+        } catch (Exception e) {
+            assertTrue("Exception occurred while checking error message: " + e.getMessage(), false);
+        }}
+
+    @Then("system should display error message {string}")
+    public void systemDisplayedABackendErrorMessageInsteadOf(String expectedMsg) {
+        try {
+            WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(4));
+
+            // Check if any backend-related error message appears
+            WebElement backendMsg = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(@class,'fl-message') or contains(text(),'SQLSTATE') or contains(text(),'error') or contains(text(),'Exception')]")));
+
+            String backendText = backendMsg.getText().trim();
+
+            // If backend message appears → BUG, since it should show UI validation message instead
+            assertTrue("❌ BUG: Backend message appeared instead of validation message → " + backendText, false);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            fail("Error while validating BUG scenario: " + e.getMessage());
-        }
-    }
+            assertTrue("⚠ Exception occurred while checking messages: " + e.getMessage(), false);
+        }}
 
-    @Then("system displayed a backend error message instead of {string}")
-    public void systemdisplayedabackenderrormessageinsteadof(String expectedMsg) {
-        pages.getUserPage().ValidateErrorMessage(expectedMsg);
-    }
 
     // ====== API Verification ======
     @And("verify user with name {string} and email {string} updated in API")
@@ -163,21 +177,20 @@ public class EditUserSteps {
         System.out.println("---------------------------------------------------------------------------------");
 
         JsonPath json = response.jsonPath();
-
-        //Use a Groovy GPath expression to find the user by email and read its role
         String apiRole = json.getString("find{it.email=='" + expectedEmail + "'}.role");
 
         System.out.println("📡 API Check → Email: " + expectedEmail + " | Role: " + apiRole);
 
-        // Match UI role value ("Store Manager") with backend format ("store_management")
-        expectedRole = expectedRole.trim()
-        .toLowerCase()
-        .replace(" ", "_")  // Store Manager → store_manager
-        .replace("store_manager", "store_management"); // align with backend
+
+        expectedRole = expectedRole.trim().toLowerCase()
+                .replace(" ", "_")  // Store Manager → store_manager
+                .replace("store_manager", "store_management"); // align with backend
 
         apiRole = apiRole.trim().toLowerCase();
+
         assertEquals("Role update mismatch!", expectedRole, apiRole);
     }
+
 
     @And("verify user with email {string} and role {string} is not updated in API")
     public void verifyUserRoleNotUpdatedInAPI(String expectedEmail, String expectedRole) {
@@ -193,10 +206,12 @@ public class EditUserSteps {
         System.out.println("📡 API Check (after invalid update) → Email: " + expectedEmail + " | Role: " + apiRole);
 
         assertNotEquals("Role changed unexpectedly!", expectedRole, apiRole);
-        System.out.println("User role in API remained unchanged (invalid update rejected).");
+        System.out.println("User role in API remained unchanged — invalid update rejected.");
     }
 
+
     // ====== BUG ASSERTION ======
+
     @And("Verify user update {string} in API with invalid data")
     public void verifyUserUpdateInAPIWithInvalidData(String userEmail) {
         Response response = given(ApiUtilities.spec()).get("/users");

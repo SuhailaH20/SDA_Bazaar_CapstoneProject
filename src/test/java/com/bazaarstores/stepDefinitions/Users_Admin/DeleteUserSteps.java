@@ -2,6 +2,7 @@ package com.bazaarstores.stepDefinitions.Users_Admin;
 
 import com.bazaarstores.pages.AllPages;
 import com.bazaarstores.pages.UserPage;
+import com.bazaarstores.utilities.Driver;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.restassured.path.json.JsonPath;
@@ -9,6 +10,11 @@ import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.*;
 import com.bazaarstores.utilities.ApiUtilities;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 
 public class DeleteUserSteps {
 
@@ -35,22 +41,36 @@ public class DeleteUserSteps {
         pages.getUserPage().validateCannotDeleteAdminError();
     }
 
-    @Then("BUG: System displayed {string} instead of showing 'User deleted successfully.'")
-    public void bugSystemDisplayedErrorInsteadOfSuccess(String errorMsg) {
-        System.out.println("🐞 BUG DETECTED: " + errorMsg);
-    }
 
-    //This is a bug! It is already reported!!!
-    @Then("admin should see success message for delete")
-    public void adminShouldSeeSuccessMessageForDelete() {
-        userPage.validateSuccessDeleteMessage();
-    }
+    @Then("Admin should see success message {string}") //
+    public void adminShouldSeeSuccessMessageForDelete(String expectedMsg) {
+        try {
+            WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(8));
+            WebElement toastMsg = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='toast-container']//div[contains(@class,'toast-message')]")));
+
+            String actualText = toastMsg.getText().trim();
+
+            //Check if the actual toast message matches the expected success message
+            if (actualText.equalsIgnoreCase(expectedMsg)) {
+                assertTrue("System displayed success message.", true);
+
+                // If the message indicates that admin users cannot be deleted → mark it as a BUG
+            } else if (actualText.contains("You cant delete a admin role users!")) {
+                assertTrue("❌ BUG: System showed error instead of success → " + actualText, false);
+
+            }
+            //Handle any unexpected exceptions while checking the toast message
+        } catch (Exception e) {
+            assertTrue("Exception while checking delete message: " + e.getMessage(), false);
+        }}
+
 
     // ====== API Verification ======
-    @And("BUG: User {string} remains in API")
+    @And("verify user {string} not exists in API")
     public void verifyUserIsDeletedInAPI(String email) {
         Response response = given(ApiUtilities.spec()).get("/users");
         assertEquals("Unexpected status code!", 200, response.statusCode());
+
         System.out.println("---------------------------------API Response------------------------------------");
         response.prettyPrint();
         System.out.println("---------------------------------------------------------------------------------");
@@ -59,11 +79,11 @@ public class DeleteUserSteps {
         String apiEmail = json.getString("find{it.email=='" + email + "'}.email");
 
         if (apiEmail != null) {
-            System.out.println("🐞 BUG CONFIRMED → System failed to delete user: " + email + " (still exists in API)");
+            assertTrue("❌ BUG: User still exists in API after deletion → " + email, false);
 
         } else {
             System.out.println("User successfully deleted from API → " + email);
-            assertNull("User still exists in API! (BUG)", apiEmail);
+            assertTrue("User deleted successfully from API", true);
         }
     }
 
@@ -78,5 +98,5 @@ public class DeleteUserSteps {
         JsonPath json = response.jsonPath();
         String apiEmail = json.getString("find{it.email=='" + email + "'}.email");
         assertNotNull("User was deleted unexpectedly!", apiEmail);
-        System.out.println("User still exists in API → " + email);
+        System.out.println("Success -> User still exists in API → " + email);
     }}

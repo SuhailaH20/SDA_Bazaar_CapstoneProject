@@ -1,4 +1,4 @@
-@AdminAddUser   @AdminUser
+@AdminAddUser
 Feature: Admin Add User Functionality
   As an Admin
   I want to be able to add users from the Add User Page
@@ -145,7 +145,6 @@ Feature: Admin Add User Functionality
     And verify user with name "Ali" and email "Ali@example." does not exist in API
 
 
-
   @Negative
   Scenario: US15_TC013 Verify error for spaces in email
     And admin enters name "Asayl"
@@ -170,7 +169,7 @@ Feature: Admin Add User Functionality
     And verify user with name "Asayl" and email "Asayl@example..com" does not exist in API
 
 
-  @Negative
+  @Negative @Bug
   Scenario: BUG: US15_TC015 Verify system accepts email missing domain *
     And admin enters name "Diyala"
     And admin enters email "Diyala@example"
@@ -178,11 +177,11 @@ Feature: Admin Add User Functionality
     And admin enters password confirmation "Diyala12"
     And admin selects role "Store Manager"
     And admin clicks Submit button
-    Then BUG: system accepts invalid data instead of showing error "Please include a valid domain (e.g., .com, .net)." with note "System accepts invalid email without domain"
-    And verify user exists in API with invalid data
+    Then System display Error "Please include a valid domain (e.g., .com, .net)."
+    And verify user with name "Diyala" and email "Diyala@example" does not exist in API
 
 
-  @Negative
+  @Negative @Bug
   Scenario: BUG: US15_TC016 Verify system accepts name without letters *
     And admin enters name "@"
     And admin enters email "123@example.com"
@@ -190,21 +189,21 @@ Feature: Admin Add User Functionality
     And admin enters password confirmation "D1234567"
     And admin selects role "Store Manager"
     And admin clicks Submit button
-    Then BUG: system accepts invalid data instead of showing error "Name must contain letters." with note "BUG: System accepted invalid name without alphabetic characters."
-    And verify user exists in API with invalid data
+    Then System display Error "Name must contain letters."
+    And verify user with name "@" and email "123@example.com" does not exist in API
 
-  @Negative
-  Scenario: BUG: US15_TC017 Verify system accepts uppercase email *
+  @Negative @Bug
+  Scenario: BUG: Verify system accepts uppercase email *
     And admin enters name "Rawan"
     And admin enters email "RAWAN@EXAMPLE.COM"
     And admin enters password "Ra1234567"
     And admin enters password confirmation "Ra1234567"
     And admin selects role "Customer"
     And admin clicks Submit button
-    Then BUG: system accepts invalid data instead of showing error "Email must be in lowercase format." with note "BUG: System accepted uppercase email instead of validating lowercase."
-    And verify user exists in API with invalid data
+    Then System display Error "Email must be in lowercase format."
+    And verify user with name "Rawan" and email "RAWAN@EXAMPLE.COM" does not exist in API
 
-  @Negative
+  @Negative @Bug
   Scenario: BUG: US15_TC018 Verify system accepts password with space *
     And admin enters name "Osama"
     And admin enters email "Osama@example.com"
@@ -212,8 +211,8 @@ Feature: Admin Add User Functionality
     And admin enters password confirmation "123 4567"
     And admin selects role "Admin"
     And admin clicks Submit button
-    Then BUG: system accepts invalid data instead of showing error "Spaces are not allowed in password." with note "BUG: System accepted password containing spaces and allowed user creation."
-    And verify user exists in API with invalid data
+    Then System display Error "Spaces are not allowed in password."
+    And verify user with name "Osama" and email "Osama@example.com" does not exist in API
 
   @Negative
   Scenario: US15_TC019 Verify error when Name field is empty
