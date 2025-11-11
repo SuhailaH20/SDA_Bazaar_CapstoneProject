@@ -17,6 +17,8 @@ public class AddStoreAsAdminPage extends BasePage {
     private final By ErrorMessageLocation = By.xpath("//li[.='The location field is required.']");
     private final By ErrorMessageAdminName = By.xpath("//li[.='The admin field is required.']");
     private final By ErrorMessageLongDescription = By.xpath("//li[.='The description field must not be greater than 255 characters.']");
+    private final By BoldButton = By.xpath("//button[@aria-label=\"Bold\"]");
+    private final By ItalicButton = By.xpath("//button[@aria-label=\"Italic\"]");
 
 
     public AddStoreAsAdminPage enterStoreName(String storeName) {
@@ -25,9 +27,21 @@ public class AddStoreAsAdminPage extends BasePage {
         return this;
     }
 
+    public AddStoreAsAdminPage clearNamefild(){
+        findElement(NameField).clear();
+     return this;
+    }
+
+
     public AddStoreAsAdminPage enterStoreLocation(String location) {
         findElement(LocationField).clear();
         sendKeys(LocationField, location);
+        return this;
+    }
+
+
+    public AddStoreAsAdminPage clearlocatinfild(){
+        findElement(LocationField).clear();
         return this;
     }
 
@@ -38,8 +52,22 @@ public class AddStoreAsAdminPage extends BasePage {
         Driver.getDriver().switchTo().defaultContent();
         return this;}
 
+
+
+    public AddStoreAsAdminPage clearDescriptionfild(){
+        switchToFrame(iframelocater);
+        findElement(DescriptionField).clear();
+        Driver.getDriver().switchTo().defaultContent();
+        return this;
+    }
+
     public AddStoreAsAdminPage selectAdminByName(String adminName) {
         selectByVisibleText(SelectAdmin, adminName);
+        return this;
+    }
+
+    public AddStoreAsAdminPage selectAdminByIndex(int num) {
+        selectByIndex(SelectAdmin, num);
         return this;
     }
 
@@ -50,11 +78,21 @@ public class AddStoreAsAdminPage extends BasePage {
         return this;
     }
 
-    public AddStoreAsAdminPage fillAddStoreForm(String storeName, String location, String description, String adminName)  {
+    public AddStoreAsAdminPage fillAddStoreForm(String storeName, String location, String description, String admin)  {
         enterStoreName(storeName);
         enterStoreLocation(location);
         enterStoreDescription(description);
-        selectAdminByName(adminName);
+        selectAdminByName(admin);
+        ClickSubmitButton();
+        return this;
+    }
+
+
+    public AddStoreAsAdminPage fillStoreFormToEdit(String storeName, String location, String description, int admin)  {
+        enterStoreName(storeName);
+        enterStoreLocation(location);
+        enterStoreDescription(description);
+        selectAdminByIndex(admin);
         ClickSubmitButton();
         return this;
     }
@@ -99,8 +137,17 @@ public class AddStoreAsAdminPage extends BasePage {
     }
 
 
-    public void deselectAdmin() {
+    public AddStoreAsAdminPage deselectAdmin() {
         selectByVisibleText(SelectAdmin, "Select User");
+        return this;
 
+    }
+
+    public AddStoreAsAdminPage FormatText(){
+        click(BoldButton);
+        click(ItalicButton);
+
+
+        return this;
     }
 }
