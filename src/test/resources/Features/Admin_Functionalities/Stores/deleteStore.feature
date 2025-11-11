@@ -5,8 +5,7 @@ Feature: Delet Store As Admin Feature
 
  Background:
  Given user goes to homepage
- When user enters email "admin@sda.com" and password "Password.12345"
- And user clicks login button
+ When admin is logged in successfully
  And Admin clicks on Store Link
  And Admin clicks on Add store button
  And Admin Full Add Store Form with "Store delete", "Location", 3, "Description" to edit
