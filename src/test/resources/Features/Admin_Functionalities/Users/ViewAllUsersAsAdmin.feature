@@ -1,4 +1,4 @@
-@UI @Admin @ViewAllUsers
+@UI @Admin @ViewAllUsers  @AdminUser
 Feature: View all users in the system as an Admin
 
   Background:

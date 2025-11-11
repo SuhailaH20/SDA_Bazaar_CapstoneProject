@@ -41,11 +41,11 @@ public class FavoritesPage {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", heartIcon);
 
             wait.until(ExpectedConditions.invisibilityOfElementLocated(productLocator));
-            System.out.println("✅ Product '" + productName + "' removed from favorites successfully.");
+            System.out.println(" Product '" + productName + "' removed from favorites successfully.");
         } catch (TimeoutException e) {
-            System.out.println("⚠ Product '" + productName + "' not found or could not be removed.");
+            System.out.println(" Product '" + productName + "' not found or could not be removed.");
         } catch (Exception e) {
-            System.out.println("⚠ Unexpected error while removing '" + productName + "': " + e.getMessage());
+            System.out.println(" Unexpected error while removing '" + productName + "': " + e.getMessage());
         }
     }
 

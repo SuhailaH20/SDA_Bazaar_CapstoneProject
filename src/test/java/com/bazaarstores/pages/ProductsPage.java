@@ -10,7 +10,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ProductPage {
+public class ProductsPage {
 
     private By productNames = By.cssSelector(".product-name");
     private By productPrices = By.cssSelector(".product-price");
@@ -69,15 +69,24 @@ public class ProductPage {
 
     @Then("Product {string} should appear in favorites list")
     public void product_should_appear_in_favorites_list(String productName) {
-
+        //
         Driver.getDriver().get(ConfigReader.getBaseUrl() + "/favorites");
 
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".favorite-product-name")));
 
-        boolean isInFavorites = FavoritesPage.isProductInFavorites(productName);
-        Assert.assertTrue("Product not in favorites", isInFavorites);
+
+        By productInFavorites = By.xpath(
+                "//div[contains(@class,'favorite-icon') and contains(@class,'active') and @data-product-name='" + productName + "']"
+        );
+
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(productInFavorites));
+            Assert.assertTrue(" Product '" + productName + "' is in favorites.", true);
+        } catch (TimeoutException e) {
+            Assert.fail(" Product '" + productName + "' not found in favorites.");
+        }
     }
+
 
     public boolean isFavoriteErrorMessageDisplayed(String expectedText) {
         WebDriver driver = Driver.getDriver();

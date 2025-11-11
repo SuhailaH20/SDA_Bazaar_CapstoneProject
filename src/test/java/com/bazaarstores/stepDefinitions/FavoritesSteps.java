@@ -1,7 +1,7 @@
 package com.bazaarstores.stepDefinitions;
 
 import com.bazaarstores.pages.FavoritesPage;
-import com.bazaarstores.pages.ProductPage;
+import com.bazaarstores.pages.ProductsPage;
 import com.bazaarstores.utilities.ConfigReader;
 import com.bazaarstores.utilities.Driver;
 import io.cucumber.java.en.*;
@@ -9,7 +9,7 @@ import org.junit.Assert;
 
 public class FavoritesSteps {
 
-    ProductPage productPage = new ProductPage();
+    ProductsPage productPage = new ProductsPage();
     FavoritesPage favoritesPage = new FavoritesPage();
 
     @When("User clicks heart icon for product {string} and verifies it in favorites")
