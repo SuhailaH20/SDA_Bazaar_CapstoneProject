@@ -1,11 +1,8 @@
-@AdminLogout
+@AdminLogout  @Login
 Feature: Logout functionality
 
   Background:
-    Given user goes to homepage
-    And user enters email "admin@sda.com" and password "Password.12345"
-    And user clicks login button
-    Then admin should be logged in successfully
+    Given admin is logged in successfully
 
   #[US03_TC01]
   @AdminPositiveLogout
@@ -23,7 +20,7 @@ Feature: Logout functionality
     Then user should be redirected to login page
 
     #[US03_TC03]
-  @PositiveLogout @AutoLogout
+  @PositiveLogout @AutoLogout @Bug
   Scenario: Auto logout after 10 minutes of inactivity
     When user remains idle for 3 minutes
     Then user should be redirected to login page

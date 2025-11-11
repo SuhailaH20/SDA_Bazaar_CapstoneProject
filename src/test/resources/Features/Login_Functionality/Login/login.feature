@@ -46,7 +46,7 @@ Feature: Login Functionality
     Then user should see empty "email" error message
 
    # [US02_TC006]
-  @NegativeLogin
+  @NegativeLogin @Bug
   Scenario: Validate case-insensitive email.
     When user enters email "CUSTOMER@SDA.COM" and password "Password.12345"
     And user clicks login button

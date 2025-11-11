@@ -1,5 +1,4 @@
-
-@ViewStorsAsAdmin
+@ViewStorsAsAdmin   @AdminStore
 Feature:View Store as Admin Feature
 
     Background:

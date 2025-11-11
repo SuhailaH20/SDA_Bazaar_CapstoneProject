@@ -108,23 +108,33 @@ public class AddUserSteps {
     }
 
     // ====== BUG ASSERTION ======
-    @Then("BUG: system accepts invalid data instead of showing error {string} with note {string}")
-    public void bugSystemAcceptsInvalidData(String expectedErrorMsg, String bugNote) {
+    @Then("System display Error {string}")
+    public void systemDisplayError(String expectedErrorMsg) {
         try {
-            boolean successAppeared = Driver.getDriver().findElements(By.xpath("//div[contains(@class,'toast-success')]")).size() > 0;
+            // Check if the expected error message is visible on the page
+            boolean errorVisible = Driver.getDriver().findElements(By.xpath("//*[contains(text(),'" + expectedErrorMsg + "')]")).size() > 0;
 
-            if (successAppeared) {
-                System.out.println("Expected Error: " + expectedErrorMsg);
-                assertTrue("BUG CONFIRMED → " + bugNote, true);
+            // If the error message is found, print it and pass the test
+            if (errorVisible) {
+                assertTrue("System displayed the expected error message.", true);
+
+                // If the error message is NOT found, check if a success message appeared instead
             } else {
-                fail("No success message found — possible different bug.");
-            }
+                boolean successVisible = Driver.getDriver().findElements(By.xpath("//*[contains(text(),'User created successfully')]")).size() > 0;
 
+                // If a success message appeared instead of the expected error → it's a BUG
+                if (successVisible) {
+                    assertTrue("❌ BUG: System accepted invalid data instead of showing error → " + expectedErrorMsg, false);
+
+                    // If neither success nor error message appeared → fail the test with missing feedback
+                } else {
+                    assertTrue("Test failed: Expected error message not found, and no success message appeared.", false);
+                }}
+
+            // Handle any unexpected exceptions during the message validation process
         } catch (Exception e) {
-            e.printStackTrace();
-            fail("Error while validating BUG scenario: " + e.getMessage());
-        }
-    }
+            assertTrue("Exception while checking for message: " + e.getMessage(), false);
+        }}
 
     // ====== API Verification ======
     @Then("verify user exists in API")
@@ -162,22 +172,4 @@ public class AddUserSteps {
             System.out.println("Success -> User not found in API");
         }
         assertNull("User with same email and name should not exist!", foundUser);
-    }
-
-    @And("verify user exists in API with invalid data")
-    public void verifyUserExistsInAPIWithInvalidData() {
-        Response response = given(ApiUtilities.spec()).get("/users");
-        assertEquals("Unexpected status code!", 200, response.statusCode());
-        System.out.println("---------------------------------API Response------------------------------------");
-        response.prettyPrint();
-        System.out.println("---------------------------------------------------------------------------------");
-
-        JsonPath json = response.jsonPath();
-        String actualName = json.getString("find{it.email=='" + userEmail + "'}.name");
-        String apiEmail = json.getString("find{it.email=='" + AddUserSteps.userEmail + "'}.email");
-
-        System.out.println("📡 API Check after invalid data update → Email : " + apiEmail + "| name → " + actualName );
-        assertNotNull("User with invalid data was not found in API!", apiEmail);
-        System.out.println("🐞 BUG CONFIRMED → System accepted invalid data and user record exists in API.");
-
     }}

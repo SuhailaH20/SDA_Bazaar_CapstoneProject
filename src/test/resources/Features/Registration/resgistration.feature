@@ -79,7 +79,7 @@ Scenario: Validate existing email.
 
   # Known Bug: The system allows numbers in Name field. Expected to restrict invalid characters.
    #[US01_TC007]
-  @NegativeRegistration
+  @NegativeRegistration @Bug
   Scenario: Validate invalid characters in Name.
     Given user goes to homepage
     When user clicks registration link

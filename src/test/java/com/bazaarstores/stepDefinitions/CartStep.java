@@ -205,7 +205,6 @@ public class CartStep {
     @And("User clicks Confirm Cart button")
     public void clickConfirmCartButton() {
         cartPage.clickConfirmCart();
-        System.out.println("🛒 Clicked Confirm Cart button");
     }
 
     @Then("System should display order summary with items and total price")

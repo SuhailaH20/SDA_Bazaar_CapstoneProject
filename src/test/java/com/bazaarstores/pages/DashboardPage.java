@@ -2,7 +2,6 @@ package com.bazaarstores.pages;
 
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 
 public class DashboardPage extends BasePage {
 
@@ -13,7 +12,7 @@ public class DashboardPage extends BasePage {
     private final By welcomeMessage = By.cssSelector("h3.d-inline");
     private final By profileLink = By.cssSelector("a[href*='profile'], button:contains('Profile')");
     private final By ordersLink = By.cssSelector("a[href*='orders'], button:contains('Orders')");
-    private final By productsLink = By.cssSelector("a[href*='products'], button:contains('Products')");
+    private final By productsLink =  By.xpath("//a[.//span[text()='Products']]");
     private final By logoutButton = By.xpath("//a[normalize-space()='Log Out']");
     private final By userName = By.cssSelector(".user-name, [class*='username']");
     private final By menu = By.xpath("//div[@class=\"sidebar-wrapper active ps\"]");//rajja
@@ -31,8 +30,10 @@ public class DashboardPage extends BasePage {
         click(ordersLink);
     }
 
-    public void clickProductsLink() {
+    public ProductPage clickProductsLink() {
+        waitForElementToBeVisible(productsLink);
         click(productsLink);
+        return new ProductPage();
     }
 
     public LoginPage clickLogout() {

@@ -91,14 +91,55 @@ public class LoginSteps {
         Driver.getDriver().get(ConfigReader.getBaseUrl());
     }
 
+    //------------------------------------------
+    @When("admin clicks profile")
+    public void adminClicksProfile() {
+        allPages.getDashboardPage().clickProfileLink();
+    }
+    @And("admin clicks logout")
+    public void adminClicksLogout() {
+        allPages.getDashboardPage().clickLogout();
+    }
+
+    @When("user clicks profile")
+    public void userClicksProfile() {
+        allPages.getHomePage().clickProfile();
+    }
+    @And("user clicks logout")
+    public void userClicksLogout() {
+        allPages.getHomePage().clickLogout();
+    }
+
+    @Then("user should be redirected to login page")
+    public void userShouldBeRedirectedToLoginPage() {
+        Assert.assertTrue("Login page should be displayed after logout",
+                allPages.getLoginPage().isLoginPageDisplayed());
+    }
+
+    /// ///////////////////
+    @When("user remains idle for {int} minutes")
+    public void userRemainsIdleForMinutes(Integer minutes) {
+        try {
+            // Convert minutes to milliseconds
+            Thread.sleep(minutes * 60 * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    @When("user tries to access the store URL directly")
+    public void userTriesToAccessStoreUrlDirectly() {
+        Driver.getDriver().get(ConfigReader.getBaseUrl()+"/customer");
+    }
+
     //Lama
     @Given("admin is logged in successfully")
     public void admin_is_logged_in_successfully() {
         Driver.getDriver().get(ConfigReader.getBaseUrl());
         allPages.getLoginPage()
-        .enterEmail(ConfigReader.getAdminEmail())
-        .enterPassword(ConfigReader.getDefaultPassword());
+                .enterEmail(ConfigReader.getAdminEmail())
+                .enterPassword(ConfigReader.getDefaultPassword());
         allPages.getLoginPage().clickLoginButton();
         org.junit.Assert.assertTrue("Admin dashboard should be visible", allPages.getDashboardPage().isProfileVisitChartDisplayed()
         );
-    }}
+    }
+}
