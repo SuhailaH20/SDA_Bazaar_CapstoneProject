@@ -11,8 +11,8 @@ Feature: Delete Product Functionality
   Scenario: Successfully delete a product
     When Store Manager clicks the Delete button for product with Name "Mouse"
     And Store Manager confirms the deletion
-    Then the product with Name "Mouse" should no longer be visible in the product list
-    And a success message "Product deleted successfully" should be displayed
+    Then a success message "Product deleted successfully" should be displayed
+    And the product with Name "Mouse" should no longer be visible in the product list
 
 
   Scenario: Cancel a product deletion

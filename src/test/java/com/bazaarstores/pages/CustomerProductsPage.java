@@ -10,7 +10,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ProductsPage {
+public class CustomerProductsPage {
 
     private By productNames = By.cssSelector(".product-name");
     private By productPrices = By.cssSelector(".product-price");

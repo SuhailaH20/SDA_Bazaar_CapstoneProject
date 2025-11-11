@@ -14,6 +14,7 @@ public class ProductSteps {
     DashboardPage dashboardPage = new DashboardPage();
     ProductPage productPage = new ProductPage();
     ProductCreatePage productCreate = new ProductCreatePage();
+    private static String lastName;
 
     // Background
     @Given("Store Manager is on the Login page")
@@ -50,6 +51,7 @@ public class ProductSteps {
 
     @And("Store Manager fills in product details with Name {string}, Price {string}, Stock {string}, and SKU {string}")
     public void storeManagerFillsInProductDetailsWithNamePriceStockAndSKU(String name, String price, String stock, String sku) {
+        lastName = name;
         productCreate
                 .enterName(name)
                 .enterPrice(price)
@@ -69,12 +71,12 @@ public class ProductSteps {
 
     @Then("an error message {string} should be displayed")
     public void anErrorMessageShouldBeDisplayed(String message) {
+        productPage.deleteProductApi(lastName);
         productCreate.verifyErrorMessage(message);
     }
 
     @Given("a product with SKU {string} already exists")
     public void aProductWithSKUAlreadyExists(String sku) {
-        productPage.ensureSkuExists(sku);
         Assert.assertTrue("SKU not created in table: " + sku,
                 productPage.isSkuPresentInTable(sku));
     }
@@ -98,8 +100,9 @@ public class ProductSteps {
     // DELETE PRODUCT
     @And("a product with Name {string} already exists")
     public void aProductWithNameAlreadyExists(String productName) {
-        Assert.assertTrue("productName not created in table: " + productName,
-                productPage.isSkuPresentInTable(productName));
+        productPage.ensureNameExists(productName);
+        Assert.assertTrue("Name not created in table: " + productName,
+                productPage.isNamePresentInTable(productName));
     }
 
     @When("Store Manager clicks the Delete button for product with Name {string}")
@@ -112,7 +115,7 @@ public class ProductSteps {
         productPage.confirmDelete();
     }
 
-    @Then("the product with Name {string} should no longer be visible in the product list")
+    @And("the product with Name {string} should no longer be visible in the product list")
     public void theProductWithNameShouldNoLongerBeVisibleInTheProductList(String productName) {
         Assert.assertFalse("Product still visible after deletion: " + productName,
                 productPage.isProductVisible("productName"));
@@ -126,7 +129,7 @@ public class ProductSteps {
     @Then("the product with Name {string} should still be visible in the product list")
     public void theProductWithNameShouldStillBeVisibleInTheProductList(String productName) {
         Assert.assertTrue("Product not found: " + productName,
-                productPage.isProductVisible("productName"));
+                productPage.isProductVisible(productName));
     }
 
 }

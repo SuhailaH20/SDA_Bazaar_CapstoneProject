@@ -8,10 +8,10 @@ import org.junit.Assert;
 import java.util.List;
 import java.util.Objects;
 
-public class ProductsSteps {
+public class CustomerProductsSteps {
 
     LoginPage loginPage = new LoginPage();
-    ProductsPage productPage = new ProductsPage();
+    CustomerProductsPage productPage = new CustomerProductsPage();
     FavoritesPage favoritesPage = new FavoritesPage();
 
     // ---------- Background ----------
