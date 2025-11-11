@@ -81,7 +81,9 @@ public class UserPage extends BasePage {
     public UserPage clickSubmit() {
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(8));
         WebElement submitBtn = wait.until(ExpectedConditions.elementToBeClickable(SubmitButton));
-        ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].scrollIntoView(true);", submitBtn);
+
+        // Scroll to Submit button
+        ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].scrollIntoView(true);", submitBtn); // true = top
         ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].click();", submitBtn);
         return this;
     }
@@ -102,11 +104,11 @@ public class UserPage extends BasePage {
                         // Read the email from the second column
                         WebElement emailCell = Driver.getDriver().findElement(By.xpath("//table//tbody/tr[" + i + "]/td[2]"));
 
-                        String actualEmail = emailCell.getText().trim().replaceAll("\\s+", "");
+                        String actualEmail = emailCell.getText().trim().replaceAll("\\s+", ""); //remove any space from email get from browser
                         System.out.println("🔎 Checking row " + i + " → [" + actualEmail + "]");
 
                         //Perform exact email comparison
-                        if (actualEmail.equalsIgnoreCase(userEmail)) {
+                        if (actualEmail.equals(userEmail)) {
                             System.out.println("Found exact match → " + actualEmail);
 
                             // Locate the Edit button in the same row
@@ -138,7 +140,7 @@ public class UserPage extends BasePage {
                 js.executeScript("arguments[0].scrollIntoView(true);", nextBtn);
                 js.executeScript("arguments[0].click();", nextBtn);
 
-
+                // Wait for the table to reload before continuing search
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table//tbody//tr[1]")));
 
 
@@ -189,7 +191,7 @@ public class UserPage extends BasePage {
 
             // Assert that the browser validation message matches (case-insensitive & trimmed)
             assertTrue("Expected browser validation popup not found!\nExpected (part): " + expectedMsg + "\nActual: " + browserMsg,
-            browserMsg.replaceAll("\\s+", " ").toLowerCase().contains(expectedMsg.replaceAll("\\s+", " ").toLowerCase().trim()));
+            browserMsg.replaceAll("\\s+", " ").toLowerCase().contains(expectedMsg.replaceAll("\\s+", " ").toLowerCase().trim())); // to make comparison more flexible and make sure spacing and case differences do not fail the test
         }
         return this;
     }
