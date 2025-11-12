@@ -4,12 +4,12 @@ Feature: View all users in the system as an Admin
   Background:
     Given Admin is logged in and on the Dashboard page
 
-  @Positive   @US14_TC001
+  @Positive   @US14_TC001 @Smoke
   Scenario: Verify that admin can view all users in the system
     When Admin navigates to the Users page
     Then All users should be displayed with columns "NAME", "EMAIL", and "ACTIONS"
 
-  @Positive   @US14_TC002
+  @Positive   @US14_TC002 @Smoke
   Scenario: Verify search functionality with a valid email
     When Admin navigates to the Users page
     And Admin searches for user by email "admin@sda.com"
@@ -21,7 +21,7 @@ Feature: View all users in the system as an Admin
     And Admin searches for users with domain "@sda.com"
     Then All users with email domain "@sda.com" should be displayed
 
-  @Negative   @US14_TC004
+  @Negative   @US14_TC004 @Smoke
   Scenario: Verify search functionality with a non-existing email
     When Admin navigates to the Users page
     And Admin searches for user by email "test12@test.com"

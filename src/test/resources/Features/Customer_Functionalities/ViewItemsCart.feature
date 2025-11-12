@@ -10,7 +10,6 @@ Feature: View items in the cart as a customer
     When User hovers over the cart icon
     Then Popup cart should display product names, prices, and subtotal
 
-
   @Positive  @US08_TC002  @Bug
   Scenario: Verify viewing items on the cart page
     Given User has at least one product in the cart
@@ -24,8 +23,8 @@ Feature: View items in the cart as a customer
     When User hovers over the cart icon
     And User clicks remove button for an item in the popup cart
     Then Item should be removed and cart count should decrease by 1
-#    And Success message should be displayed
-#    And The shopping cart should not contain the deleted product in backend
+    And Success message should be displayed
+    And The shopping cart should not contain the deleted product in backend
 
   @Positive  @US08_TC004  @Bug
   Scenario: Verify removing an item from the cart page
