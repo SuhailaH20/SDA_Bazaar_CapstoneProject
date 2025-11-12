@@ -58,12 +58,12 @@ public class ProductCreatePage extends BasePage {
     }
 
     // 🔹 Click Submit
-    public ProductsPage clickSubmit() {
+    public ProductPage clickSubmit() {
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(10));
         WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(submitButton));
         ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].scrollIntoView(true);", btn);
         ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].click();", btn);
-        return new ProductsPage();
+        return new ProductPage();
     }
 
 

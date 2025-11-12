@@ -30,10 +30,10 @@ public class DashboardPage extends BasePage {
         click(ordersLink);
     }
 
-    public ProductsPage clickProductsLink() {
+    public ProductPage clickProductsLink() {
         waitForElementToBeVisible(productsLink);
         click(productsLink);
-        return new ProductsPage();
+        return new ProductPage();
     }
 
     public LoginPage clickLogout() {
