@@ -79,7 +79,7 @@ public class DeleteUserSteps {
         String apiEmail = json.getString("find{it.email=='" + email + "'}.email");
 
         if (apiEmail != null) {
-            assertTrue("❌ BUG: User still exists in API after deletion → " + email, false);
+            assertTrue("❌ BUG: User still exists in API after deletion → " + email, false); // use false to fail the test if it gets here
 
         } else {
             System.out.println("User successfully deleted from API → " + email);

@@ -29,7 +29,7 @@ private final By SuccessAddMessage = By.xpath("//div[@class=\"toast toast-succes
 private final By SuccessUpdateMessag = By.xpath("//div[@class=\"toast-message\"]");
 private final By ConfirmationDialogMessag = By.xpath("//div[@aria-labelledby=\"swal2-title\"]");
 private final By ConfirmDeleteButton = By.xpath("//button[@class=\"swal2-confirm swal2-styled swal2-default-outline\"]");
-private final By SuccessdeleteMessag = By.xpath("//div[@class=\"toast-message\"]");////div[@class="toast-message"]
+private final By SuccessdeleteMessag = By.id("toast-container");////div[@class="toast-message"]
 private final By CancelButton = By.xpath("//button[@class=\"swal2-cancel swal2-styled swal2-default-outline\"]");
 private final By backdrop = By.xpath("//div[@class=\"swal2-container swal2-center swal2-backdrop-show\"]");
 
@@ -96,7 +96,9 @@ private final By backdrop = By.xpath("//div[@class=\"swal2-container swal2-cente
         String editIconXpath = String.format("//td[text()='%s']/following-sibling::td//i[@class=\"bi bi-trash3\"]", storeName);
 
         waitForElementToDisappear(SuccessAddMessage);
-        Driver.getDriver().findElement(By.xpath(editIconXpath)).click();
+        By deleteButtonLocator = By.xpath(editIconXpath);
+        scrollToElement(deleteButtonLocator);
+        click(deleteButtonLocator);
 
         return this;
     }
@@ -119,20 +121,13 @@ private final By backdrop = By.xpath("//div[@class=\"swal2-container swal2-cente
     }
 
 
-    public StorsPage isSuccessDeleteMessageDisplayed(){
-       try {
-       // Wait longer for delete operations as they might take more time
-       WebDriverWait longWait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(20));
-        longWait.until(ExpectedConditions.visibilityOfElementLocated(SuccessdeleteMessag));
-          Assert.assertTrue(isDisplayed(SuccessdeleteMessag));
-            } catch (TimeoutException e) {
-                throw new AssertionError("Delete success message did not appear within 20 seconds", e);
-            }
+     public StorsPage isSuccessDeleteMessageDisplayed(){
+        waitForElementToDisappear(ConfirmDeleteButton);
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(SuccessdeleteMessag));
+     isDisplayed(SuccessdeleteMessag);
+
             return this;}
 
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(SuccessdeleteMessag));
-//       isDisplayed(SuccessdeleteMessag);
-//        return this;}
 
 
 

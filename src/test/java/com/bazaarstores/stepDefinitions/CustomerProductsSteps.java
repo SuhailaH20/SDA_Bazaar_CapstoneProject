@@ -8,10 +8,10 @@ import org.junit.Assert;
 import java.util.List;
 import java.util.Objects;
 
-public class ProductsSteps {
+public class CustomerProductsSteps {
 
     LoginPage loginPage = new LoginPage();
-    ProductsPage productPage = new ProductsPage();
+    CustomerProductsPage productPage = new CustomerProductsPage();
     FavoritesPage favoritesPage = new FavoritesPage();
 
     // ---------- Background ----------
@@ -23,11 +23,12 @@ public class ProductsSteps {
     }
 
     // ---------- US04 ----------
-    @Then("All products should display name, price, and image")
-    public void all_products_should_display_name_price_and_image() {
+    @Then("All products should display name, price, image and description")
+    public void all_products_should_display_name_image_and_description() {
         Assert.assertFalse("Names missing!", productPage.getAllProductNames().isEmpty());
         Assert.assertFalse("Prices missing!", productPage.getAllProductPrices().isEmpty());
         Assert.assertFalse("Images missing!", productPage.getAllProductImages().isEmpty());
+        Assert.assertFalse("description missing!", productPage.getAllProductDescriptions().isEmpty());
     }
 
     @Then("Product list should load within {int} seconds")

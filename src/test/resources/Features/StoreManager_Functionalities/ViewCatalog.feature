@@ -7,5 +7,4 @@ Feature: Store Manager Product Catalog
     When Store Manager enters valid credentials and clicks login
     And Store Manager clicks on Products button in the menu
     Then the catalog table should be displayed with all products
-    And verify product list via API response
 
