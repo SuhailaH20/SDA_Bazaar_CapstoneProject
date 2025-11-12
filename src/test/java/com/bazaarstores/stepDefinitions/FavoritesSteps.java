@@ -1,7 +1,6 @@
 package com.bazaarstores.stepDefinitions;
 
 import com.bazaarstores.pages.FavoritesPage;
-import com.bazaarstores.pages.ProductsPage;
 import com.bazaarstores.utilities.ConfigReader;
 import com.bazaarstores.utilities.Driver;
 import io.cucumber.java.en.*;
