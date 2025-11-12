@@ -23,11 +23,12 @@ public class CustomerProductsSteps {
     }
 
     // ---------- US04 ----------
-    @Then("All products should display name, price, and image")
-    public void all_products_should_display_name_price_and_image() {
+    @Then("All products should display name, price, image and description")
+    public void all_products_should_display_name_image_and_description() {
         Assert.assertFalse("Names missing!", productPage.getAllProductNames().isEmpty());
         Assert.assertFalse("Prices missing!", productPage.getAllProductPrices().isEmpty());
         Assert.assertFalse("Images missing!", productPage.getAllProductImages().isEmpty());
+        Assert.assertFalse("description missing!", productPage.getAllProductDescriptions().isEmpty());
     }
 
     @Then("Product list should load within {int} seconds")

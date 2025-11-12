@@ -45,15 +45,13 @@ public class CustomerProductsPage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
         try {
-            // العثور على بطاقة المنتج
+
             WebElement productCard = wait.until(ExpectedConditions.visibilityOfElementLocated(
                     By.xpath("//div[contains(@class,'product-card')][.//h3[text()='" + productName + "']]")
             ));
 
-            // العثور على أيقونة القلب داخل البطاقة
             WebElement heartIcon = productCard.findElement(By.cssSelector("div.favorite.favorite-icon i"));
 
-            // التحقق إذا كانت مفعلة بالفعل
             WebElement parentDiv = heartIcon.findElement(By.xpath(".."));
             if (!parentDiv.getAttribute("class").contains("active")) {
                 ((JavascriptExecutor) driver).executeScript("arguments[0].click();", heartIcon);
