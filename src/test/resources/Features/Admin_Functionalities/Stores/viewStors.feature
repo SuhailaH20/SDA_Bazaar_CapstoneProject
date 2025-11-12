@@ -1,4 +1,4 @@
-@ViewStorsAsAdmin   @AdminStore
+@ViewStorsAsAdmin   @AdminStore  @PassTests
 Feature:View Store as Admin Feature
 
     Background:

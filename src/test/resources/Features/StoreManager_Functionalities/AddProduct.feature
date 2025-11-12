@@ -7,13 +7,13 @@ Feature: Add Product Functionality
     And Store Manager clicks on Products button in the menu
     And Store Manager clicks on ADD PRODUCT button
 
-@Test001
+@Test001 @Smoke
 Scenario: Successfully add a product with All required fields
   And Store Manager fills in product details with Name "Mouse", Price "29.99", Stock "50", and SKU "MS01001"
   And Store Manager clicks the Submit button
   Then a success message "Product created successfully" should be displayed
 
-  @Test2
+  @Test2 @Smoke
   Scenario: Attempt to add a product with a missing Name
     And Store Manager fills in product details with Name "", Price "29.99", Stock "50", and SKU "MS11021"
     And Store Manager clicks the Submit button
@@ -31,7 +31,7 @@ Scenario: Successfully add a product with All required fields
     And Store Manager clicks the Submit button
     Then an error message "The stock field is required." should be displayed
 
-  @Test5
+  @Test5 @Smoke
   Scenario: Attempt to add a product with a missing SKU
     And Store Manager fills in product details with Name "Mouse", Price "29.99", Stock "50", and SKU ""
     And Store Manager clicks the Submit button

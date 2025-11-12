@@ -115,7 +115,7 @@
 
                     <!-- Include all Runner classes -->
                     <includes>
-                        <include>**/*Runner.java</include>
+                        <include>**/Runner.java</include>
                     </includes>
 
                     <!-- Continue execution even if tests fail - good for learning -->
@@ -191,7 +191,7 @@
             <id>customer</id>
             <properties>
                 <tags>@Customer</tags>
-                <browser>firefox</browser>
+                <browser>chrome</browser>
             </properties>
         </profile>
 
