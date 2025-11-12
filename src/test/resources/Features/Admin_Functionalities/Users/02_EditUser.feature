@@ -10,7 +10,7 @@ Feature: Admin Edit User Functionality
     And admin navigates to Users list page
 
 
-  @Positive
+  @Positive @Smoke
   Scenario: US16_TC001 Verify editing user name *
     And admin clicks edit for the user with email "RAWAN@EXAMPLE.COM"
     And admin updates name to "Sara Mohamad"
@@ -20,7 +20,7 @@ Feature: Admin Edit User Functionality
     Then admin should see update success message "User updated successfully"
     And verify user with name "Sara Mohamad" and email "RAWAN@EXAMPLE.COM" updated in API
 
-  @Positive
+  @Positive @Smoke
   Scenario: US16_TC002 Verify editing user email *
     And admin clicks edit for the user with email "RAWAN@EXAMPLE.COM"
     And admin updates email to "sara12@test.com"
@@ -39,7 +39,7 @@ Feature: Admin Edit User Functionality
     Then admin should see update success message "User updated successfully"
     And verify user with name "Sara Mohamad" and email "sara12@test.com" updated in API
 
-  @Positive
+  @Positive @Smoke
   Scenario: US16_TC004 Verify editing user role
     And admin clicks edit for the user with email "sara12@test.com"
     And admin updates role to "Store Manager"
@@ -50,7 +50,7 @@ Feature: Admin Edit User Functionality
     And verify user with email "sara12@test.com" updated role "Store Manager" in API
 
 
-  @Negative @BUG
+  @Negative @BUG @Smoke
   Scenario: BUG: US16_TC005 Verify error when name is empty
     And admin clicks edit for the user with email "Diyala@example"
     And admin updates name to ""

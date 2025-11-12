@@ -1,7 +1,7 @@
 @StoreManager
 Feature: Store Manager Product Catalog
 
-  @StoreManager @T01Catalog @BugApi
+  @StoreManager @T01Catalog @BugApi @Smoke
   Scenario: Verify Store Manager can view the catalog of all products
     Given Store Manager is on the Login page
     When Store Manager enters valid credentials and clicks login

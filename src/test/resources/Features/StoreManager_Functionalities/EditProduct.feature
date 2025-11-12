@@ -7,7 +7,7 @@ Feature: Edit Product Functionality
     And Store Manager clicks on Products button in the menu
     And a product with Name "Mouse" already exists
 
-  @Positive
+  @Positive @Smoke
   Scenario: Verify editing an existing product with valid inputs
     When Store Manager clicks on the Edit button for product with Name "Mouse"
     And Store Manager updates the product with Name "Gaming Mouse", Price "25.99", Stock "55"
@@ -15,7 +15,7 @@ Feature: Edit Product Functionality
     Then a success message "Product updated successfully" should be displayed
 
 
-  @Negative
+  @Negative @Smoke
   Scenario: Verify editing an existing product with invalid price values
     When Store Manager clicks on the Edit button for product with Name "Gaming Mouse"
     And Store Manager updates the product with Name "Gaming", Price "-25", Stock "55"

@@ -4,7 +4,7 @@ Feature: Confirm items in the cart as a customer
   Background:
     Given User is logged in
 
-  @Positive  @US09_TC001  @Bug
+  @Positive  @US09_TC001  @Bug @Smoke
   Scenario: Verify confirming cart with valid items
     Given User has at least one product in the cart
     When User hovers over the cart icon
@@ -13,7 +13,7 @@ Feature: Confirm items in the cart as a customer
     Then System should display order summary with items and total price
     And System should display success popup message "Your order has been received successfully."
 
-  @Negative  @US09_TC002
+  @Negative  @US09_TC002 @Smoke
   Scenario: Verify confirming empty cart
     Given User has no items in the cart
     When User hovers over the cart icon

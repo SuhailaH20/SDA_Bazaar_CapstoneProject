@@ -1,5 +1,5 @@
 @DeleteStoreAsAdmin   @AdminStore
-Feature: Delet Store As Admin Feature
+Feature: Delete Store As Admin Feature
 
 
 
@@ -12,7 +12,7 @@ Feature: Delet Store As Admin Feature
  Then Admin should see success message for adding store
 
 
-
+  @Smoke
   Scenario: veify Confirmation Dialog appers
     When Admin Click on Delete Button for "Store delete"
     Then Verify the Confirmation Dialog appers
@@ -21,14 +21,14 @@ Feature: Delet Store As Admin Feature
 
 
 
-
+  @Smoke
   Scenario: Verify Delete Button
     When Admin Click on Delete Button for "Store delete"
     And Admin Clicks on Confirm Delete Button
     Then Admin should see success message for delete store
     And Verify the store deleted successfully via API
 
-
+  @Smoke
   Scenario: Verify Cancel Button
     When Admin Click on Delete Button for "Store delete"
     And  Admin Click on Cancel Button
@@ -37,7 +37,7 @@ Feature: Delet Store As Admin Feature
   When Admin Click on Delete Button for "Store delete"
   And Admin Clicks on Confirm Delete Button
 
-
+  @Smoke
   Scenario: Verify When the admin Clicks outside the Confirmation Dialog The Store remains in the table
     When Admin Click on Delete Button for "Store delete"
     And Admin Click on Backdrop
