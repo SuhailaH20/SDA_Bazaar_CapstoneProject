@@ -20,8 +20,6 @@ Feature: Delet Store As Admin Feature
      And Admin Clicks on Confirm Delete Button
 
 
-
-
   Scenario: Verify Delete Button
     When Admin Click on Delete Button for "Store delete"
     And Admin Clicks on Confirm Delete Button
@@ -33,7 +31,7 @@ Feature: Delet Store As Admin Feature
     When Admin Click on Delete Button for "Store delete"
     And  Admin Click on Cancel Button
     Then Verify store in the table
-  #delet after complet verify
+   #delet after complet verify
   When Admin Click on Delete Button for "Store delete"
   And Admin Clicks on Confirm Delete Button
 
