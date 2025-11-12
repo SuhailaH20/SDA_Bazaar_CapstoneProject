@@ -28,7 +28,7 @@ Feature: Add Store as Admin Feature
     And Admin clicks on Submit button
     Then Admin should see success message for adding store
 
-  @MultipleStores @Smoke
+  @MultipleStores
   Scenario: Add Multiple Storses Sequentially
     When Admin clicks on Add store button
     And Admin Full Add Store Form with "Name", "Location", "Store Manager", "Description"
@@ -54,7 +54,7 @@ Feature: Add Store as Admin Feature
     Then Admin should see Error message for "name" field
 
 
-  @NegativeTests    @Smoke
+  @NegativeTests
   Scenario: verify error message when Location is missing
     When Admin clicks on Add store button
     And Admin enter store name
@@ -86,7 +86,7 @@ Feature: Add Store as Admin Feature
     Then Admin should see Error message for "description" field
 
 
-  @BoundaryTests @Bug @Smoke
+  @BoundaryTests @Bug
   Scenario: Add Store with Descriptin Less than 255 characters
     When Admin clicks on Add store button
     And Admin enter store name
@@ -97,7 +97,7 @@ Feature: Add Store as Admin Feature
     Then Admin should see success message for adding store
     And Verify the store addition successfully via API with store name
 
-  @BoundaryTests    @Smoke
+  @BoundaryTests
   Scenario: Add Store with Description more than 255 characters
     When Admin clicks on Add store button
     And Admin enter store name

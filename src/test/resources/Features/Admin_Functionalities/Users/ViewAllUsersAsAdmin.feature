@@ -4,7 +4,7 @@ Feature: View all users in the system as an Admin
   Background:
     Given Admin is logged in and on the Dashboard page
 
-  @Positive   @US14_TC001 @Smoke
+  @Positive   @US14_TC001
   Scenario: Verify that admin can view all users in the system
     When Admin navigates to the Users page
     Then All users should be displayed with columns "NAME", "EMAIL", and "ACTIONS"

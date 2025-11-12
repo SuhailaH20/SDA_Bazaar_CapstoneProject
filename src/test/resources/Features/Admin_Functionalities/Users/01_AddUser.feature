@@ -181,7 +181,7 @@ Feature: Admin Add User Functionality
     And verify user with name "Diyala" and email "Diyala@example" does not exist in API
 
 
-  @Negative @Bug @Smoke
+  @Negative @Bug
   Scenario: BUG: US15_TC016 Verify system accepts name without letters *
     And admin enters name "@"
     And admin enters email "123@example.com"
@@ -203,7 +203,7 @@ Feature: Admin Add User Functionality
     Then System display Error "Email must be in lowercase format."
     And verify user with name "Rawan" and email "RAWAN@EXAMPLE.COM" does not exist in API
 
-  @Negative @Bug @Smoke
+  @Negative @Bug
   Scenario: BUG: US15_TC018 Verify system accepts password with space *
     And admin enters name "Osama"
     And admin enters email "Osama@example.com"

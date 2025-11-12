@@ -4,7 +4,7 @@ Feature: View items in the cart as a customer
   Background:
     Given User is logged in
 
-  @Positive  @US08_TC001
+  @Positive  @US08_TC001 @Smoke
   Scenario: Verify viewing items in the popup cart
     Given User has at least one product in the cart
     When User hovers over the cart icon
@@ -35,7 +35,7 @@ Feature: View items in the cart as a customer
     Then Item should be removed and total should update correctly
     And The shopping cart should not contain the deleted product in backend
 
-  @Negative  @US08_TC005
+  @Negative  @US08_TC005 @Smoke
   Scenario: Verify empty cart message
     Given User has no items in the cart
     When User hovers over the cart icon

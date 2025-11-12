@@ -31,7 +31,7 @@ Feature: Customer views products and manages favorites
     And User clicks heart icon for product "Flower" again
     Then Error message should be displayed "Error! Product is already in favorites."
 
-  @US07 @Positive @US07_TC003 @Smoke
+  @US07 @Positive @US07_TC003
   Scenario: Validate removing product from favorites
     Given Product "Flower" is in favorites
     When User removes product "Flower" from favorites
