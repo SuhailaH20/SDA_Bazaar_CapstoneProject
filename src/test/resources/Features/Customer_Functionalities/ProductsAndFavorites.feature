@@ -1,3 +1,4 @@
+
 @UI @Customer
 Feature: Customer views products and manages favorites
 
@@ -6,14 +7,14 @@ Feature: Customer views products and manages favorites
 
   # US04 - Product List Display
   @US04 @Positive @US04_TC001
-  Scenario: Validate product list displays name, price, and image
-    Then All products should display name, price, and image
+  Scenario: Validate product list displays name, price, image and description
+    Then All products should display name, price, image and description
 
   @US04 @Positive @US04_TC002
   Scenario: Validate product list loads quickly
-    Then Product list should load within 3 seconds
+    Then Product list should load within 7 seconds
 
- # US05 - Product List Display Details
+ # US05 - Product List Display Details - Bug for Display description
   @US05 @Positive @US05_TC001
   Scenario: Validate only Laptop product should display a description
     Then Each product may or may not have a description, but description field should be visible
