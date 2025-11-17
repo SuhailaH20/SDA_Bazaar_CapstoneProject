@@ -169,7 +169,7 @@ Feature: Admin Add User Functionality
     And verify user with name "Asayl" and email "Asayl@example..com" does not exist in API
 
 
-  @Negative @Bug @Smoke
+  @Negative @Bug
   Scenario: BUG: US15_TC015 Verify system accepts email missing domain *
     And admin enters name "Diyala"
     And admin enters email "Diyala@example"
@@ -192,7 +192,7 @@ Feature: Admin Add User Functionality
     Then System display Error "Name must contain letters."
     And verify user with name "@" and email "123@example.com" does not exist in API
 
-  @Negative @Bug @Smoke
+  @Negative @Bug
   Scenario: BUG: US15_TC017 Verify system accepts uppercase email *
     And admin enters name "Rawan"
     And admin enters email "RAWAN@EXAMPLE.COM"

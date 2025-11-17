@@ -4,14 +4,14 @@ Feature: Add Product to Cart Functionality
   Background:
     Given User is logged in and on the product page
 
-  @POSITIVE @US06_TC001 @BugApi
+  @POSITIVE @US06_TC001 @BugApi @Smoke
   Scenario: Verify adding a single product to the cart
     When User clicks Add to Cart button for product "Flower"
     Then Product "Flower" should be added successfully and success message is displayed
     And cart count increases by 1
 #    And The backend cart should contain the product "Flower"
 
-  @POSITIVE @US06_TC002 @BugApi @Smoke
+  @POSITIVE @US06_TC002 @BugApi
   Scenario: Verify adding multiple products to the cart
     When User clicks Add to Cart button for product "Laptop"
     And User clicks Add to Cart button for product "E-Book Reader"
@@ -30,7 +30,7 @@ Feature: Add Product to Cart Functionality
     And cart count increases by 3
     And The backend cart should contain the product "Jeans"
 
-  @Negative @US06_TC004 @Bug @Smoke
+  @Negative @US06_TC004 @Bug
   Scenario: Verify adding an out of stock product
     Given there is a product "pen_outOfStock" that is out of stock
     When User clicks Add to Cart button for product "pen_outOfStock"

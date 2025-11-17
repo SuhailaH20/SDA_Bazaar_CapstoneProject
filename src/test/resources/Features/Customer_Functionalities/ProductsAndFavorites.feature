@@ -25,7 +25,7 @@ Feature: Customer views products and manages favorites
     When User clicks heart icon for product "Flower"
     Then Product "Flower" should appear in favorites list
 
-  @US07 @Negative @US07_TC002 @Smoke
+  @US07 @Negative @US07_TC002
   Scenario: Validate error message when adding same product twice
     When User clicks heart icon for product "Flower"
     And User clicks heart icon for product "Flower" again

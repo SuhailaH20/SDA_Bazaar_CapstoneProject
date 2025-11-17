@@ -35,7 +35,7 @@ Feature: View items in the cart as a customer
     Then Item should be removed and total should update correctly
     And The shopping cart should not contain the deleted product in backend
 
-  @Negative  @US08_TC005 @Smoke
+  @Negative  @US08_TC005
   Scenario: Verify empty cart message
     Given User has no items in the cart
     When User hovers over the cart icon

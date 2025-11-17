@@ -11,7 +11,7 @@ Feature: Login Functionality
     Then user should be logged in successfully
 
 # [US02_TC001]
-  @Smoke @HappyPathLogin
+  @HappyPathLogin
   Scenario: Successful login with valid credentials
     When user enters email "customer@sda.com" and password "Password.12345"
     And user clicks login button
@@ -46,7 +46,7 @@ Feature: Login Functionality
     Then user should see empty "email" error message
 
    # [US02_TC006]
-  @NegativeLogin @Bug @Smoke
+  @NegativeLogin @Bug
   Scenario: Validate case-insensitive email.
     When user enters email "CUSTOMER@SDA.COM" and password "Password.12345"
     And user clicks login button

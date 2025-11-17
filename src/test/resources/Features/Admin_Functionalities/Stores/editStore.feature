@@ -67,7 +67,7 @@ Feature: Edit Store As Admin Feature
 
 
 
-         @NegativeTests @Smoke
+         @NegativeTests
          Scenario: verify error message when Name is Missing during Edit
            When Admin clicks on Add store button
            And Admin Full Add Store Form with "Store Edit", "Location", 2, "Description" to edit
