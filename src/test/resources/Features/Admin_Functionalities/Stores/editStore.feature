@@ -9,7 +9,7 @@ Feature: Edit Store As Admin Feature
       And Admin clicks on Store Link
 
 
-       @HappyPath11 @Smoke
+       @HappyPath11 @Smoke @22
         Scenario: Edit Store Name Happy Path
        When Admin clicks on Add store button
        And Admin Full Add Store Form with "Store Edit", "Location", 2, "Description" to edit
@@ -103,7 +103,7 @@ Feature: Edit Store As Admin Feature
 
 
 
-        @NegativeTestsEditDescription @Bug
+        @NegativeTestsEditDescription
         Scenario: verify error message when Description is Missing during Edit
           When Admin click on Edit button for store "Store Edit"
           And Admin Leave the "description" field empty
@@ -111,7 +111,7 @@ Feature: Edit Store As Admin Feature
           Then Admin should see Error message for "description" field
 
 
-          @Bug11
+          @Bug
         Scenario: verify multiple error message when missing All feild
           When Admin click on Edit button for store "Store Edit"
           And Admin Leave the "All field" field empty

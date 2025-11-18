@@ -110,7 +110,7 @@ Feature: Add Store as Admin Feature
 
 
 
-  @BoundaryTests @Bug
+   @Bug
   Scenario: Add Store with Description exactly 255 characters
     When Admin clicks on Add store button
     And Admin enter store name

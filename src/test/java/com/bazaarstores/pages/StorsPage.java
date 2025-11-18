@@ -47,7 +47,7 @@ private final By backdrop = By.xpath("//div[@class=\"swal2-container swal2-cente
 
     public StorsPage verifyStoreTableHeaders(){
 
-        List<String> expectedHeaders = List.of("NAME", "DESCRIPTION", "ADMIN NAME", "ACTIONS");
+        List<String> expectedHeaders = List.of("NAME", "DESCRIPTION", "ADMIN NAME", "LOCation","ACTIONS");
         for (String hedder :expectedHeaders){
             WebElement headerElement = findElement(StorestableHeaders);
             Assert.assertTrue("Header " + hedder + " is not displayed in the store table.",
