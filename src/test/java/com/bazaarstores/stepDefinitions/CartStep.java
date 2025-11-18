@@ -112,7 +112,7 @@ public class CartStep {
     @Given("User has at least one product in the cart")
     public void userHasAtLeastOneProductInCart() {
         if (homePage.isCartEmpty()) {
-            homePage.addProductToCart("Flower");
+            homePage.addProductToCart("Laptop");
             //homePage.addProductToCart("Jeans");
         }
     }

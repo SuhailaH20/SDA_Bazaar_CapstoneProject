@@ -12,7 +12,7 @@ Feature: Edit Store As Admin Feature
        @HappyPath11 @Smoke @22
         Scenario: Edit Store Name Happy Path
        When Admin clicks on Add store button
-       And Admin Full Add Store Form with "Store Edit", "Location", 2, "Description" to edit
+       And Admin Full Add Store Form with "Store Edit", "Location", 1, "Description" to edit
        Then Admin should see success message for adding store
        When Admin click on Edit button for store "Store Edit"
        And Admin enter store name

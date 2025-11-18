@@ -21,7 +21,7 @@ Feature: Delete Store As Admin Feature
 
 
 
-  @Smoke @33
+ @Smoke
   Scenario: Verify Delete Button
     When Admin Click on Delete Button for "Store delete"
     And Admin Clicks on Confirm Delete Button

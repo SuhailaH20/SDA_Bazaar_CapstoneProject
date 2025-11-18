@@ -20,7 +20,7 @@ Feature: Admin Edit User Functionality
 #    Then admin should see update success message "User updated successfully"
 #    And verify user with name "Sara Mohamad" and email "RAWAN@EXAMPLE.COM" updated in API
 
-  @Positive
+  @Positive @Smoke
   Scenario: US16_TC002 Verify editing user email **
     And admin clicks edit for the user with email "sara@test.com"
     And admin updates email to "sara12@test.com"
