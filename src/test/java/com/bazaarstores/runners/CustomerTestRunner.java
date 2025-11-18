@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
                 "json:target/cucumber-reports/customer-report.json",
                 "junit:target/cucumber-reports/customer-report.xml"
         },
-        tags = "@UI and (@US04 or @US05 or @US07)", // Customer
+        tags = "@US07_TC001", // Customer
         monochrome = true
 )
 public class CustomerTestRunner {
