@@ -40,7 +40,7 @@ Feature: Admin Edit User Functionality
     Then admin should see update success message "User updated successfully"
     And verify user with name "Sara Mohamad" and email "sara12@test.com" updated in API
 
-  @Positive @Smoke
+  @Positive
   Scenario: US16_TC004 Verify editing user role
     And admin clicks edit for the user with email "sara12@test.com"
     And admin updates role to "Store Manager"
