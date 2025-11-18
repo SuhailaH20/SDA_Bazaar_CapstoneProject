@@ -8,7 +8,7 @@ Feature: Add Store as Admin Feature
       And Admin clicks on Store Link
 
 
-  @HappyPath
+  @HappyPath @Smoke
   Scenario: Add Store Happy Path
     When Admin clicks on Add store button
     And Admin enter store name
@@ -110,7 +110,7 @@ Feature: Add Store as Admin Feature
 
 
 
-  @BoundaryTests @Bug
+   @Bug
   Scenario: Add Store with Description exactly 255 characters
     When Admin clicks on Add store button
     And Admin enter store name

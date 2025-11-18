@@ -8,7 +8,7 @@ Feature: Delete Store As Admin Feature
  When admin is logged in successfully
  And Admin clicks on Store Link
  And Admin clicks on Add store button
- And Admin Full Add Store Form with "Store delete", "Location", 3, "Description" to edit
+ And Admin Full Add Store Form with "Store delete", "Location", 1, "Description" to edit
  Then Admin should see success message for adding store
 
 
@@ -21,7 +21,7 @@ Feature: Delete Store As Admin Feature
 
 
 
-
+ @Smoke
   Scenario: Verify Delete Button
     When Admin Click on Delete Button for "Store delete"
     And Admin Clicks on Confirm Delete Button
@@ -33,7 +33,7 @@ Feature: Delete Store As Admin Feature
     When Admin Click on Delete Button for "Store delete"
     And  Admin Click on Cancel Button
     Then Verify store in the table
-  #delet after complet verify
+   #delet after complet verify
   When Admin Click on Delete Button for "Store delete"
   And Admin Clicks on Confirm Delete Button
 
