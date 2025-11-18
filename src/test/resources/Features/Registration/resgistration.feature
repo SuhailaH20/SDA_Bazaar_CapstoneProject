@@ -16,7 +16,7 @@ Feature: Registration Feature
 
 
     #[US01_TC002] execution for BZRT3-78
-  @NegativeRegistration @Smoke
+  @NegativeRegistration
   Scenario: Registration with empty name and email
     Given user goes to homepage
     When user clicks registration link
@@ -42,7 +42,7 @@ Feature: Registration Feature
 
 
   #[US01_TC004]
-  @NegativeRegistration @Smoke
+  @NegativeRegistration
   Scenario: Registration with short password
     Given user goes to homepage
     When user clicks registration link

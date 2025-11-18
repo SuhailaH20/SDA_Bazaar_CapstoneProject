@@ -43,7 +43,8 @@ public class UserPage extends BasePage {
     private final By shortPasswordMessage = By.xpath("//li[contains(text(),'The password field must be at least 6 characters.')]");
     private final By mismatchPasswordMessage = By.xpath("//li[contains(text(),'The password field confirmation does not match.')]");
     private final By duplicateEmailMessage = By.xpath("//li[.='The email has already been taken.']");
-    private final By successToast = By.xpath("//div[@class='toast toast-success']");
+   // private final By successToast = By.xpath("//div[@class='toast toast-success']");
+    private final By successToast = By.xpath("//*[@id=\"toast-container\"]/div/div[3]");
     private final By successDeleteToast = By.xpath("//div[contains(text(),'User deleted successfully')]");
     private final By cannotDeleteAdminError = By.xpath("//*[@id=\"toast-container\"]/div/div[2]");
 

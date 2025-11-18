@@ -15,7 +15,7 @@ Feature: Edit Product Functionality
     Then a success message "Product updated successfully" should be displayed
 
 
-  @Negative @Smoke
+  @Negative
   Scenario: Verify editing an existing product with invalid price values
     When Store Manager clicks on the Edit button for product with Name "Gaming Mouse"
     And Store Manager updates the product with Name "Gaming", Price "-25", Stock "55"

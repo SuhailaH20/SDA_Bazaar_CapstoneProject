@@ -9,7 +9,7 @@ Feature: Edit Store As Admin Feature
       And Admin clicks on Store Link
 
 
-       @HappyPath
+       @HappyPath11 @Smoke
         Scenario: Edit Store Name Happy Path
        When Admin clicks on Add store button
        And Admin Full Add Store Form with "Store Edit", "Location", 2, "Description" to edit

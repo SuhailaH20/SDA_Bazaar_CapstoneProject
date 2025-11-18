@@ -4,7 +4,7 @@ Feature: Confirm items in the cart as a customer
   Background:
     Given User is logged in
 
-  @Positive  @US09_TC001  @Bug @Smoke
+  @Positive  @US09_TC001  @Bug
   Scenario: Verify confirming cart with valid items
     Given User has at least one product in the cart
     When User hovers over the cart icon

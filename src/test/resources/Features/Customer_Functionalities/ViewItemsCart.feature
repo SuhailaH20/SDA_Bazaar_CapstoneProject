@@ -4,7 +4,7 @@ Feature: View items in the cart as a customer
   Background:
     Given User is logged in
 
-  @Positive  @US08_TC001
+  @Positive  @US08_TC001 @Smoke
   Scenario: Verify viewing items in the popup cart
     Given User has at least one product in the cart
     When User hovers over the cart icon

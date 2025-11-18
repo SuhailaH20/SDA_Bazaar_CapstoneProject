@@ -12,7 +12,7 @@ Feature: Logout functionality
     Then user should be redirected to login page
 
    #[US03_TC02]
-  @PositiveLogout @AdminSessionTermination @Smoke
+  @PositiveLogout @AdminSessionTermination
   Scenario: Validate session termination after logout
     When admin clicks profile
     And admin clicks logout

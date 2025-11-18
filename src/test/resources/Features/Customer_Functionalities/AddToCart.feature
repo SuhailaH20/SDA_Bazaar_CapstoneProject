@@ -11,7 +11,7 @@ Feature: Add Product to Cart Functionality
     And cart count increases by 1
 #    And The backend cart should contain the product "Flower"
 
-  @POSITIVE @US06_TC002 @BugApi @Smoke
+  @POSITIVE @US06_TC002 @BugApi
   Scenario: Verify adding multiple products to the cart
     When User clicks Add to Cart button for product "Laptop"
     And User clicks Add to Cart button for product "E-Book Reader"
@@ -20,7 +20,7 @@ Feature: Add Product to Cart Functionality
     And Cart subtotal should be correct
 #    And The backend cart should contain the products "Laptop" and "E-Book Reader"
 
-  @POSITIVE @US06_TC003 @Bug @Smoke
+  @POSITIVE @US06_TC003 @Bug
   Scenario: Verify adding the same product multiple times
     When User clicks Add to Cart button for product "Jeans"
     And User clicks Add to Cart button for product "Jeans"

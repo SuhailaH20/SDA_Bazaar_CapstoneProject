@@ -14,7 +14,7 @@ Feature: Delete Product Functionality
     Then a success message "Product deleted successfully" should be displayed
     And the product with Name "Mouse" should no longer be visible in the product list
 
-  @Smoke
+
   Scenario: Cancel a product deletion
     When Store Manager clicks the Delete button for product with Name "Mouse"
     And Store Manager cancels the deletion
