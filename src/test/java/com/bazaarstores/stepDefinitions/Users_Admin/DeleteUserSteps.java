@@ -101,11 +101,17 @@ public class DeleteUserSteps {
         System.out.println("Success -> User still exists in API → " + email);
 
 
+        // ++++++++++ Delete user from API (Cleanup only)
+        String userId = json.getString("find{it.email=='" + email + "'}.id");
 
-//        // ++++++++++ Delete user from API
-//        String userId = json.getString("find{it.email=='" + email + "'}.id");
-//        Response deleteResponse = given(ApiUtilities.spec())
-//                .delete("/users/delete/" + userId);
-//
-//        assertEquals("Delete request failed!", 200, deleteResponse.statusCode());
+        if (userId != null) {
+            Response deleteResponse = given(ApiUtilities.spec())
+                    .delete("/users/" + userId);
+
+            if (deleteResponse.statusCode() == 200) {
+                System.out.println("Cleanup: User deleted successfully from API → " + email);
+            } else {
+                System.out.println("Cleanup skipped → User not deletable in API (Status: " + deleteResponse.statusCode() + ")");
+            }
+        }
     }}
