@@ -18,7 +18,7 @@ Feature:View Store as Admin Feature
       When Admin clicks on Store Link
       Then Admin should be navigated to Store page
 
-@11
+
     Scenario: Verify Store Table Information Display
      When Admin clicks on Store Link
      Then Admin should be navigated to Store page
