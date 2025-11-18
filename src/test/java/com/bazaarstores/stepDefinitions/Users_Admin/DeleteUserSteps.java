@@ -99,4 +99,14 @@ public class DeleteUserSteps {
         String apiEmail = json.getString("find{it.email=='" + email + "'}.email");
         assertNotNull("User was deleted unexpectedly!", apiEmail);
         System.out.println("Success -> User still exists in API → " + email);
+
+
+
+        // ++++++++++ Delete user from API
+        String userId = json.getString("find{it.email=='" + email + "'}.id");
+        Response deleteResponse = given(ApiUtilities.spec())
+                .delete("/users/delete/" + userId);
+
+        assertEquals("Delete request failed!", 200, deleteResponse.statusCode());
+        System.out.println("User deleted from API→"+email);
     }}
