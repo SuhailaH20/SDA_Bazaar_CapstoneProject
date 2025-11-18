@@ -22,11 +22,8 @@ Feature: Admin Delete User Functionality
 #    Then Admin should see success message "User deleted successfully."
 #    And  verify user "123@example.com" not exists in API
 
-<<<<<<< Updated upstream
-  @Negative @Smoke
-=======
+
   @Negative  @Smoke
->>>>>>> Stashed changes
   Scenario: US17_TC003 Verify admin cannot delete Admin user
     And admin clicks delete for the user with email "sara12@test.com"
     And admin confirms delete action
