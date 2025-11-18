@@ -25,10 +25,10 @@ Feature: Admin Delete User Functionality
 
   @Negative  @Smoke
   Scenario: US17_TC003 Verify admin cannot delete Admin user
-    And admin clicks delete for the user with email "sara12@test.com"
+    And admin clicks delete for the user with email "sara@test.com"
     And admin confirms delete action
     Then admin should see error message cannot delete admin user
-    Then verify user "sara12@test.com" still exists in API
+    Then verify user "sara@test.com" still exists in API
 
 #  @Negative
 #  Scenario: US17_TC004 Verify canceling delete action
