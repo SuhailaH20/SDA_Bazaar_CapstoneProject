@@ -15,24 +15,24 @@ Feature: Customer views products and manages favorites
     Then Product list should load within 7 seconds
 
  # US05 - Product List Display Details - Bug for Display description
-  @US05 @Positive @US05_TC001
+  @US05 @Positive @US05_TC001 @Smoke
   Scenario: Validate only Laptop product should display a description
     Then Each product may or may not have a description, but description field should be visible
 
   # US07 - Favorites
-  @US07 @Positive @US07_TC001 @Smoke
+  @US07 @Positive @US07_TC001
   Scenario: Validate adding product to favorites
-    When User clicks heart icon for product "Flower"
-    Then Product "Flower" should appear in favorites list
+    When User clicks heart icon for product "Laptop"
+    Then Product "Laptop" should appear in favorites list
 
   @US07 @Negative @US07_TC002
   Scenario: Validate error message when adding same product twice
-    When User clicks heart icon for product "Flower"
-    And User clicks heart icon for product "Flower" again
+    When User clicks heart icon for product "Laptop"
+    And User clicks heart icon for product "Laptop" again
     Then Error message should be displayed "Error! Product is already in favorites."
 
   @US07 @Positive @US07_TC003
   Scenario: Validate removing product from favorites
-    Given Product "Flower" is in favorites
-    When User removes product "Flower" from favorites
-    Then Product "Flower" should not be in favorites list
+    Given Product "Laptop" is in favorites
+    When User removes product "Laptop" from favorites
+    Then Product "Laptop" should not be in favorites list

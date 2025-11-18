@@ -2,7 +2,7 @@
 Feature: Registration Feature
 
     #[US01_TC001]
-  @HappyPathRegistration @Smoke
+  @HappyPathRegistration
   Scenario: Registration Happy Path
     Given user goes to homepage
     When user clicks registration link
@@ -16,7 +16,7 @@ Feature: Registration Feature
 
 
     #[US01_TC002] execution for BZRT3-78
-  @NegativeRegistration
+  @NegativeRegistration @Smoke
   Scenario: Registration with empty name and email
     Given user goes to homepage
     When user clicks registration link
