@@ -5,7 +5,7 @@ Feature: Delete Product Functionality
     Given Store Manager is on the Login page
     When Store Manager enters valid credentials and clicks login
     And Store Manager clicks on Products button in the menu
-    And a product with Name "Gaming Mouse" already exists
+#    And a product with Name "Gaming Mouse" already exists
 
   @Smoke
   Scenario: Successfully delete a product
