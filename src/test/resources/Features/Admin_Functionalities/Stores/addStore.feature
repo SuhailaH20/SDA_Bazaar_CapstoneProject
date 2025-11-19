@@ -8,7 +8,7 @@ Feature: Add Store as Admin Feature
       And Admin clicks on Store Link
 
 
-  @HappyPath @Smoke
+  @HappyPath  @11
   Scenario: Add Store Happy Path
     When Admin clicks on Add store button
     And Admin enter store name
