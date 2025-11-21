@@ -3,6 +3,7 @@ package com.bazaarstores.stepDefinitions.Users_Admin;
 import com.bazaarstores.pages.AllPages;
 import com.bazaarstores.pages.UserPage;
 import com.bazaarstores.utilities.Driver;
+import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.restassured.path.json.JsonPath;
@@ -113,5 +114,43 @@ public class DeleteUserSteps {
             } else {
                 System.out.println("Cleanup skipped → User not deletable in API (Status: " + deleteResponse.statusCode() + ")");
             }
+        }
+    }
+
+    @And("delete and verify user with email {string} from API")
+    public void deleteAndVerifyUserFromAPI(String email) {
+
+        System.out.println("🛰 Starting cleanup for user → " + email);
+
+        // GET all users
+        Response getResponse = given(ApiUtilities.spec()).get("/users");
+        assertEquals("Failed to fetch users list!", 200, getResponse.getStatusCode());
+
+        JsonPath json = getResponse.jsonPath();
+        Integer userId = json.getInt("find{ it.email == '" + email + "' }.id");
+
+        if (userId == null) {
+            System.out.println("User already deleted → " + email);
+            return;
+        }
+
+        // DELETE request
+        Response deleteResponse = given(ApiUtilities.spec())
+        .delete("/users/" + userId);
+
+        int status = deleteResponse.getStatusCode();
+        System.out.println("DELETE status = " + status);
+        assertTrue("❌ Unexpected DELETE status code: " + status, status == 200 || status == 204);
+
+        // verify deletion
+        Response verifyRes = given(ApiUtilities.spec()).get("/users");
+        JsonPath verifyJson = verifyRes.jsonPath();
+
+        String deletedEmail = verifyJson.getString("find{ it.email == '" + email + "' }.email");
+
+        if (deletedEmail == null) {
+            System.out.println("Cleanup success → deleted " + email);
+        } else {
+            fail("❌ Cleanup failed → User still exists in API: " + email);
         }
     }}

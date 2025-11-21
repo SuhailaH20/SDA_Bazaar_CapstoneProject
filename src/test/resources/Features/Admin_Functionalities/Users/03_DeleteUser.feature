@@ -35,3 +35,11 @@ Feature: Admin Delete User Functionality
     And admin clicks delete for the user with email "123@example.com"
     And admin cancels delete action
     Then verify user "123@example.com" still exists in API
+
+
+  @Cleanup
+  Scenario: Cleanup API users
+    And delete and verify user with email "sara12@test.com" from API
+    And delete and verify user with email "sara@test.com" from API
+    And delete and verify user with email "Diyala@example" from API
+
