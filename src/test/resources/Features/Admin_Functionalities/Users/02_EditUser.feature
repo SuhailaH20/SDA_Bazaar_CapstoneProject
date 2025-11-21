@@ -23,13 +23,13 @@ Feature: Admin Edit User Functionality
 
   @Positive
   Scenario: US16_TC002 Verify editing user email **
-    And admin clicks edit for the user with email "sara@test.com"
+    And admin clicks edit for the user with email "RAWAN@EXAMPLE.COM"
     And admin updates email to "sara12@test.com"
     And admin enters Password "Ra1234567"
     And admin enters Password Confirmation "Ra1234567"
     And Admin Clicks Submit Button
     Then admin should see update success message "User updated successfully"
-    And verify user with name "Sara Ahmed" and email "sara12@test.com" updated in API
+    And verify user with name "Sara Mohamad" and email "sara12@test.com" updated in API
 
   @Positive
   Scenario: US16_TC003 Verify editing user password
