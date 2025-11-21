@@ -117,10 +117,13 @@ public class DeleteUserSteps {
         }
     }
 
+
+
+    //______ Delete user from API and verify _______
     @And("delete and verify user with email {string} from API")
     public void deleteAndVerifyUserFromAPI(String email) {
 
-        System.out.println("🛰 Starting cleanup for user → " + email);
+        System.out.println("Starting cleanup for user → " + email);
 
         // GET all users
         Response getResponse = given(ApiUtilities.spec()).get("/users");
@@ -135,11 +138,9 @@ public class DeleteUserSteps {
         }
 
         // DELETE request
-        Response deleteResponse = given(ApiUtilities.spec())
-        .delete("/users/" + userId);
+        Response deleteResponse = given(ApiUtilities.spec()).delete("/users/" + userId);
 
         int status = deleteResponse.getStatusCode();
-        System.out.println("DELETE status = " + status);
         assertTrue("❌ Unexpected DELETE status code: " + status, status == 200 || status == 204);
 
         // verify deletion
