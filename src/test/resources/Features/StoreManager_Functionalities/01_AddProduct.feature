@@ -11,7 +11,7 @@ Feature: Add Product Functionality
 Scenario: Successfully add a product with All required fields
   And Store Manager fills in product details with Name "Mouse", Price "29.99", Stock "50", and SKU "MS01001"
   And Store Manager clicks the Submit button
-#  Then a success message "Product created successfully" should be displayed
+  Then a success message "Product created successfully" should be displayed
 
   @Test2
   Scenario: Attempt to add a product with a missing Name
