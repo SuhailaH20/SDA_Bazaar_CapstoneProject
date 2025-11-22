@@ -9,7 +9,7 @@ Feature: Add Product to Cart Functionality
     When User clicks Add to Cart button for product "Laptop"
     Then Product "Laptop" should be added successfully and success message is displayed
     And cart count increases by 1
-#    And The backend cart should contain the product "Flower"
+    And The backend cart should contain the product "Flower"
 
   @POSITIVE @US06_TC002 @BugApi
   Scenario: Verify adding multiple products to the cart
@@ -18,7 +18,7 @@ Feature: Add Product to Cart Functionality
     Then Both products "Laptop" and "E-Book Reader" should appear in the cart
     And cart count increases by 2
     And Cart subtotal should be correct
-#    And The backend cart should contain the products "Laptop" and "E-Book Reader"
+    And The backend cart should contain the products "Laptop" and "E-Book Reader"
 
   @POSITIVE @US06_TC003 @Bug
   Scenario: Verify adding the same product multiple times

@@ -7,7 +7,7 @@ Feature: Delete Product Functionality
     And Store Manager clicks on Products button in the menu
     And a product with Name "Gaming Mouse" already exists
 
-  @Smoke
+
   Scenario: Successfully delete a product
     When Store Manager clicks the Delete button for product with Name "Gaming Mouse"
     And Store Manager confirms the deletion
